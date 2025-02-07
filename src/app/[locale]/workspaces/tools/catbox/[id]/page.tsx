@@ -1,62 +1,35 @@
 "use client";
 export const runtime = 'edge';
-import { Button, buttonVariants } from "@/components/ui/button";
-import { addGalleryItem, deleteGalleryItem, getGallyList } from "@/lib/gallery";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom } from 'jotai';
 import {
-  CircleHelpIcon,
-  ClipboardMinusIcon,
-  Import,
-  ImportIcon,
-  Loader2,
-  PlusIcon,
-} from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+  CircleHelpIcon, ClipboardMinusIcon,
+  ImportIcon, Loader2, PlusIcon
+} from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { v7 as uuidv7 } from 'uuid';
+
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
-import Image from "next/image";
-import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
-import { db } from "@/db/schema";
-import { list } from "postcss";
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { join } from "path";
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle
+} from '@/components/ui/dialog';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { v7 as uuidv7 } from "uuid";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { db } from '@/db/schema';
+import { addGalleryItem, deleteGalleryItem, getGallyList } from '@/lib/gallery';
 
 const newGalleryModalAtom = atom(false);
 const exportGalleryModalAtom = atom(false);
@@ -84,7 +57,7 @@ function Header() {
   const [importModal, setImportModal] = useAtom(importGalleryModalAtom);
   return (
     <div className="flex justify-between">
-      <div className="font-bold">Gallery List</div>
+      <div className="font-bold">{t("gallery_list")}</div>
       <div className="flex gap-x-2">
         <Button
           onClick={() => setImportModal(true)}
@@ -113,6 +86,7 @@ function ImportModal() {
     name: string;
     url: string;
   }
+  const t = useTranslations()
   const params = useParams();
   const [isShow, setIsShow] = useState(false);
   const [isOpen, setIsOpen] = useAtom(importGalleryModalAtom);
@@ -158,7 +132,7 @@ function ImportModal() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            This operation overwrites the data
+            {t("importGallery")}
             <Popover>
               <PopoverTrigger>
                 <CircleHelpIcon />
@@ -185,7 +159,7 @@ function ImportModal() {
             </div>
           </DialogDescription>
           <DialogFooter>
-            <Button onClick={handleImport}>Import</Button>
+            <Button onClick={handleImport}>{t("import")}</Button>
           </DialogFooter>
         </DialogHeader>
       </DialogContent>
@@ -382,18 +356,18 @@ function NewGalleryModal() {
     <AlertDialog open={isOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t("input keyword and image")}</AlertDialogTitle>
           <AlertDialogDescription>
             <div className="grid grid-cols-3 gap-x-4 items-center">
               <div className="col-span-2">
                 <Input
-                  placeholder="KeyWord"
+                  placeholder={t("keyword")}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                 />
               </div>
               <Button onClick={handleChangeImage} variant="link">
-                Choose Image
+                {t("select image")}
               </Button>
             </div>
 
@@ -417,13 +391,13 @@ function NewGalleryModal() {
           {isLoading ? (
             <AlertDialogAction disabled>
               <Loader2 className="animate-spin" />
-              Please wait
+              Loading ...
             </AlertDialogAction>
           ) : (
             <>
               {input.length > 0 && image ? (
                 <AlertDialogAction onClick={handleUpload}>
-                  {t("new")}
+                  {t("upload")}
                 </AlertDialogAction>
               ) : (
                 <AlertDialogAction disabled>{t("new")}</AlertDialogAction>

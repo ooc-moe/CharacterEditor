@@ -1,10 +1,9 @@
 'use client'
 export const runtime = 'edge';
-import { Button } from '@/components/ui/button';
-import { Link, useRouter } from '@/i18n/routing';
-import { ArrowRightIcon, CogIcon, InfoIcon, RegexIcon, UserPenIcon } from 'lucide-react';
+import { ArrowRightIcon, CogIcon, InfoIcon, PawPrintIcon, RegexIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+
+import { useRouter } from '@/i18n/routing';
 
 function page() {
   return (
@@ -19,14 +18,16 @@ function page() {
 export default page
 
 function Header(){
+  const t = useTranslations()
   return(
-    <div className="font-bold">Advanced</div>
+    <div className="font-bold">{t("advanced")}</div>
   )
 }
 
 const navlists = [
   { name: "settings", path: "settings", icon: CogIcon },
-  { name: "regex_script", path: "exhibit/regex-scripts/",icon: RegexIcon },
+  { name: "regex_scripts", path: "exhibit/regex-scripts/",icon: RegexIcon },
+  { name: "Nav.CatboxGallery", path: "tools/catbox",icon: PawPrintIcon },
   { name: "about", path: "about",  icon: InfoIcon },
 ]
 
@@ -44,7 +45,7 @@ function CharacterNav() {
               <div className='flex flex-row gap-x-2 items-center'>
                 <Icon />
                 <div className="flex flex-col">
-                  <div className='font-bold'>{item.name}</div>
+                  <div className='font-bold'>{t(item.name)}</div>
                 </div>
               </div>
               <ArrowRightIcon />

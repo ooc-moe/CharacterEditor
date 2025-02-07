@@ -1,25 +1,20 @@
 "use client";
-import { usePathname } from "@/i18n/routing";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { atom, useAtom } from 'jotai';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { db, RegexScriptsTable } from '@/db/schema';
 import {
-  getRegexScript,
-  updateFind_Regex,
-  updateIsEnable,
-  updateReplaceString,
-  updateScript_Name,
-} from "@/lib/regex";
-import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTranslations } from "next-intl";
-import { atom, useAtom } from "jotai";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { db, RegexScriptsTable } from "@/db/schema";
-import { useLiveQuery } from "dexie-react-hooks";
-import { debounce } from "es-toolkit";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
+  updateFind_Regex, updateIsEnable, updateReplaceString, updateScript_Name
+} from '@/lib/regex';
 
 const regexAtom = atom<RegexScriptsTable>();
 

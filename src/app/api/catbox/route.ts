@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { z } from 'zod';
+
 export const runtime = 'edge';
 const formDataSchema = z.object({
   name: z.string(),

@@ -1,68 +1,36 @@
 "use client";
 export const runtime = 'edge';
-import { atom, useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { atom, useAtom } from 'jotai';
+import { EllipsisVerticalIcon, ImportIcon, PlusIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
+    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+    AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+    Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+    DialogTrigger
+} from '@/components/ui/dialog';
 import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+    Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger
+} from '@/components/ui/menubar';
 import {
-  addCharacterBook,
-  copyWorldBook,
-  deleteCharacterBook,
-  exportWorldBook,
-  getAllCharacterBookLists,
-  importCharacterBook,
-} from "@/lib/worldbook";
-
+    Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow
+} from '@/components/ui/table';
+import { useRouter } from '@/i18n/routing';
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-
-import { selectedCharacterBookIdAtom } from "@/store/action";
-import { EllipsisVerticalIcon, ImportIcon, PlusIcon } from "lucide-react";
-import { useRouter } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
-import { Input } from "@/components/ui/input";
+    addCharacterBook, copyWorldBook, deleteCharacterBook, exportWorldBook, getAllCharacterBookLists,
+    importCharacterBook
+} from '@/lib/worldbook';
+import { selectedCharacterBookIdAtom } from '@/store/action';
 
 const newWorldBookModalAtom = atom(false)
 

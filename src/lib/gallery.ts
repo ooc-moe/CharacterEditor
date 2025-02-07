@@ -1,8 +1,9 @@
-import { db } from "@/db/schema"
-import { useLiveQuery } from "dexie-react-hooks";
-import { toast } from "sonner";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { remove } from 'es-toolkit';
+import { toast } from 'sonner';
 import { v7 as uuidv7 } from 'uuid';
-import { remove } from "es-toolkit";
+
+import { db } from '@/db/schema';
 
 export async function newGallery(name:string){
   try{

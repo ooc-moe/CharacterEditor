@@ -1,19 +1,17 @@
 "use client";
 export const runtime = 'edge';
-import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTranslations } from "next-intl";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { useAtom } from "jotai";
-import {
-  selectedCharacterBookEntriesAtom,
-  selectedCharacterBookIdAtom,
-} from "@/store/action";
-import { getCharacterBook } from "@/lib/worldbook";
-import { useLiveQuery } from "dexie-react-hooks";
-import { CharacterBookTable, db } from "@/db/schema";
-import { Label } from "@/components/ui/label";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { useAtom } from 'jotai';
+import { useTranslations } from 'next-intl';
+import React from 'react';
+
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { CharacterBookTable, db } from '@/db/schema';
+import { getCharacterBook } from '@/lib/worldbook';
+import { selectedCharacterBookEntriesAtom, selectedCharacterBookIdAtom } from '@/store/action';
 
 function page() {
   return <Header />;

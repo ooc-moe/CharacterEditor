@@ -85,5 +85,18 @@
   },
   "theme": "主题",
   "language": "语言",
-  "copy": "复制"
+  "copy": "复制",
+  "workspaces": "工作台",
+  "edit character": "编辑角色卡",
+  "code": "代码",
+  "status": "服务状态",
+  "advanced": "高级选项",
+  "importGallery": "此操作会覆盖数据",
+  "input keyword and image": "请输入关键词和图片",
+  "select image": "选择图片",
+  "keyword": "关键词",
+  "gallery_list": "画廊列表",
+  "faq": "提问反馈",
+  "select greetings": "选择开场白",
+  "type messages": "请输入内容"
 }

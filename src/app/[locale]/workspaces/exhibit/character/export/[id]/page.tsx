@@ -1,62 +1,29 @@
 "use client";
 export const runtime = 'edge';
-import { db } from "@/db/schema";
-import { useRouter } from "@/i18n/routing";
-import {
-  exportCharacter,
-  getCharacter,
-  getCharacterField,
-} from "@/lib/character";
-import { selectedCharacterIdAtom } from "@/store/action";
-import { useLiveQuery } from "dexie-react-hooks";
-import { useAtom } from "jotai";
-import Image from "next/image";
-import React, { useState } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { DownloadIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import React, { useState } from 'react';
 
 import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
-
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger
+} from '@/components/ui/accordion';
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { getAllCharacterBookLists } from "@/lib/worldbook";
-import { DownloadIcon } from "lucide-react";
-import { getAllRegexScriptLists } from "@/lib/regex";
-import { useTranslations } from "next-intl";
-import { Label } from "@/components/ui/label";
-import { useParams } from "next/navigation";
-import { Checkbox } from "@/components/ui/checkbox";
-import { toast } from "sonner";
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+} from '@/components/ui/select';
+import { db } from '@/db/schema';
+import { exportCharacter } from '@/lib/character';
+import { getAllRegexScriptLists } from '@/lib/regex';
+import { getAllCharacterBookLists } from '@/lib/worldbook';
 
 function page() {
   return (

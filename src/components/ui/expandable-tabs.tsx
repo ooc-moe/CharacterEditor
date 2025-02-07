@@ -1,16 +1,17 @@
 "use client";
 
-import * as React from "react";
-import { motion } from "framer-motion";
-import { useOnClickOutside } from "usehooks-ts";
-import { cn } from "@/lib/utils";
-import { LucideIcon } from "lucide-react";
-import { useRouter } from "@/i18n/routing";
-import { toast } from "@/hooks/use-toast";
-import { useAtom } from "jotai";
-import { selectedCharacterIdAtom } from "@/store/action";
-import { getCharacterField } from "@/lib/character";
-import Image from "next/image";
+import { motion } from 'framer-motion';
+import { useAtom } from 'jotai';
+import { LucideIcon } from 'lucide-react';
+import Image from 'next/image';
+import * as React from 'react';
+import { useOnClickOutside } from 'usehooks-ts';
+
+import { toast } from '@/hooks/use-toast';
+import { useRouter } from '@/i18n/routing';
+import { getCharacterField } from '@/lib/character';
+import { cn } from '@/lib/utils';
+import { selectedCharacterIdAtom } from '@/store/action';
 
 interface Tab {
   title: string;

@@ -1,65 +1,32 @@
 "use client";
 export const runtime = 'edge';
-import { useLiveQuery } from "dexie-react-hooks";
-import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { CharacterBookTable, db } from "@/db/schema";
-import { useRouter } from "@/i18n/routing";
-import {
-  addCharacterBookEntries,
-  deleteCharacterBookEntries,
-  updateCharacterBookEntriesEnable,
-  usePageGuard,
-} from "@/lib/worldbook";
-import { selectedCharacterBookEntriesAtom, selectedCharacterBookIdAtom } from "@/store/action";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
-import { EllipsisVerticalIcon, PlusIcon } from "lucide-react";
-import { size } from "es-toolkit/compat";
-import { Switch } from "@/components/ui/switch";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { useAtom } from 'jotai';
+import { EllipsisVerticalIcon, PlusIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import React, { useState } from 'react';
 
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Switch } from '@/components/ui/switch';
+import {
+  Table, TableBody,
+  TableCell,
+  TableHead, TableHeader, TableRow
+} from '@/components/ui/table';
+import { CharacterBookTable, db } from '@/db/schema';
+import { useRouter } from '@/i18n/routing';
+import {
+  addCharacterBookEntries, deleteCharacterBookEntries, updateCharacterBookEntriesEnable,
+  usePageGuard
+} from '@/lib/worldbook';
+import { selectedCharacterBookEntriesAtom, selectedCharacterBookIdAtom } from '@/store/action';
 
 function page() {
   usePageGuard();

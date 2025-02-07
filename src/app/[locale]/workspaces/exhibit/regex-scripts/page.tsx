@@ -1,52 +1,30 @@
 "use client";
 export const runtime = 'edge';
-import { db } from "@/db/schema";
-import {
-  addRegexScript,
-  deleteRegexxScript,
-  getAllRegexScriptLists,
-  importRegex,
-} from "@/lib/regex";
-import { useLiveQuery } from "dexie-react-hooks";
-import React, { useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { ImportIcon, PlusIcon } from "lucide-react";
-import { toast } from "sonner";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { atom, useAtom } from 'jotai';
+import { ImportIcon, PlusIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-
-import { atom, useAtom } from "jotai";
-import { Input } from "@/components/ui/input";
-import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/routing";
+    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+    AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
+import {
+    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import {
+    Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow
+} from '@/components/ui/table';
+import { db } from '@/db/schema';
+import { useRouter } from '@/i18n/routing';
+import {
+    addRegexScript, deleteRegexxScript, getAllRegexScriptLists, importRegex
+} from '@/lib/regex';
 
 const addRegexScriptModalAtom = atom(false);
 

@@ -1,46 +1,28 @@
 'use client'
 export const runtime = 'edge';
-import { Button, buttonVariants } from "@/components/ui/button";
-import { atom, useAtom } from "jotai";
-import { PlusIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
-import React, { useState } from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { db } from "@/db/schema";
-import { deleteGallery, getGally, newGallery } from "@/lib/gallery";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { atom, useAtom } from 'jotai';
+import { PlusIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "@/i18n/routing";
-import { set } from "date-fns";
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import {
+  Table, TableBody,
+  TableCell,
+  TableHead, TableHeader, TableRow
+} from '@/components/ui/table';
+import { useRouter } from '@/i18n/routing';
+import { deleteGallery, getGally, newGallery } from '@/lib/gallery';
 
 const newGalleryModalAtom = atom(false);
 const deleteGalleryModalAtom = atom(false)
@@ -65,7 +47,7 @@ function Header() {
   };
   return (
     <div className="flex justify-between">
-      <div>CatBox Gallery</div>
+      <div>{t("Nav.CatboxGallery")}</div>
       <div className="flex gap-x-2">
         <Button onClick={handleNewGallery} variant="outline" size="icon">
           <PlusIcon />
@@ -76,6 +58,7 @@ function Header() {
 }
 
 function Gallery (){
+  const t = useTranslations()
   const router = useRouter()
   const lists = getGally()
   const [,setDeleteModal] = useAtom(deleteGalleryModalAtom)
@@ -89,30 +72,27 @@ function Gallery (){
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead>{t("name")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {lists && lists.map((list,index) => (
           <TableRow key={list.id}>
-            <TableCell className="font-medium">{index + 1}</TableCell>
             <TableCell>{list.name}</TableCell>
             <TableCell className="text-right">
               <DropdownMenu>
-                <DropdownMenuTrigger>Action</DropdownMenuTrigger>
+                <DropdownMenuTrigger>{t("action")}</DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                 <DropdownMenuItem
                     onClick={() => router.push(`/workspaces/tools/catbox/${list.id}`)}
                   >
-                    Edit
+                    {t("edit")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={()=>handleDeleteGallery(list.id)}
                     className="text-red-600 focus:text-red-500"
                   >
-                    Delete
+                    {t("delete")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -145,7 +125,7 @@ function NewGalleryModal() {
     <AlertDialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t("ays")}</AlertDialogTitle>
           <AlertDialogDescription>
             <Input value={input} onChange={(e) => setInput(e.target.value)} />
           </AlertDialogDescription>

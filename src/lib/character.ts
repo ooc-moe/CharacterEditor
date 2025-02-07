@@ -1,19 +1,21 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { CharacterTable, db, RegexScriptsTable } from "../db/schema";
-import { filter, get } from "es-toolkit/compat";
-import extract from "png-chunks-extract";
-import text from "png-chunk-text";
-import { getCharacterBook } from "./worldbook";
-import { saveAs } from "file-saver";
-import { getRegexScript } from "./regex";
-import { toast } from "sonner";
-import { omit } from 'es-toolkit/compat';
-import { v7 as uuidv7 } from "uuid";
-import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/routing";
-import { useAtom } from "jotai";
-import { selectedCharacterIdAtom } from "@/store/action";
-import { useEffect } from "react";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { filter, get, omit } from 'es-toolkit/compat';
+import { saveAs } from 'file-saver';
+import { useAtom } from 'jotai';
+import { useTranslations } from 'next-intl';
+import text from 'png-chunk-text';
+import extract from 'png-chunks-extract';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import { v7 as uuidv7 } from 'uuid';
+
+import { useRouter } from '@/i18n/routing';
+import { selectedCharacterIdAtom } from '@/store/action';
+
+import { CharacterTable, db, RegexScriptsTable } from '../db/schema';
+import { getRegexScript } from './regex';
+import { getCharacterBook } from './worldbook';
+
 export function getAllCharacterLists() {
   const rows = useLiveQuery(() =>
     db.character.toArray().then((row) =>

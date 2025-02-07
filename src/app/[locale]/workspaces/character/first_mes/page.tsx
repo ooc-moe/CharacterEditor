@@ -2,12 +2,13 @@
 export const runtime = 'edge';
 import { debounce } from 'es-toolkit';
 import { useAtom } from 'jotai';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { getCharacterField, updateSpecV1Character, usePageGuard } from '@/lib/character';
 import { selectedCharacterIdAtom } from '@/store/action';
+import { useTranslations } from 'next-intl';
 
 function page() {
     usePageGuard();
@@ -23,7 +24,7 @@ export default page;
 function First_Mes() {
   const [cid] = useAtom(selectedCharacterIdAtom);
   const [inputValue, setInputValue] = useState<string>("");
-
+  const t = useTranslations()
   const handleChangeText = debounce(async (value: string) => {
     await updateSpecV1Character(cid as number, "first_mes", value);
   }, 1000);
@@ -46,10 +47,10 @@ function First_Mes() {
     <>
       {cid ? (
         <div className="flex flex-col h-full overflow-hidden p-0.5">
-          <Label htmlFor="message">Your message</Label>
+          <Label htmlFor="message">{t("Character.first_mes")}</Label>
           <Textarea
             className="flex-1 mt-4 resize-none overflow-auto"
-            placeholder="Type your message here."
+            placeholder={t("type messages")}
             value={inputValue}
             onChange={(e) => {
               const value = e.target.value;

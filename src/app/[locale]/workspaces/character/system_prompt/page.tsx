@@ -2,14 +2,14 @@
 export const runtime = 'edge';
 import { debounce } from 'es-toolkit';
 import { useAtom } from 'jotai';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useEffect, useState } from 'react';
 
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from '@/i18n/routing';
 import { getCharacterField, updateCharacter, usePageGuard } from '@/lib/character';
 import { selectedCharacterIdAtom } from '@/store/action';
+import { useTranslations } from 'next-intl';
 
 function page() {
     usePageGuard();
@@ -26,7 +26,7 @@ function System_Prompt() {
   const router = useRouter()
   const [cid] = useAtom(selectedCharacterIdAtom);
   const [inputValue, setInputValue] = useState<string>("");
-
+  const t = useTranslations()
 
   const handleChangeText = debounce(async (value: string) => {
     await updateCharacter(cid as number, "data.system_prompt" as string, value);
@@ -50,10 +50,10 @@ function System_Prompt() {
     <>
       {cid ? (
         <div className="flex flex-col h-full overflow-hidden p-0.5">
-          <Label htmlFor="message">Your message</Label>
+          <Label htmlFor="message">{t("Character.system_prompt")}</Label>
           <Textarea
             className="flex-1 mt-4 resize-none overflow-auto"
-            placeholder="Type your message here."
+            placeholder={t("type messages")}
             value={inputValue}
             onChange={(e) => {
               const value = e.target.value;

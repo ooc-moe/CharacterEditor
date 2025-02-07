@@ -1,30 +1,17 @@
 "use client";
 
-import * as React from "react";
 import {
-  AmphoraIcon,
-  AudioLinesIcon,
-  BookUserIcon,
-  CogIcon,
-  IdCardIcon,
-  InfoIcon,
-  LibraryBigIcon,
-  PawPrintIcon,
-  Pyramid,
-  RegexIcon,
-  SmartphoneIcon,
-} from "lucide-react";
+    AmphoraIcon, AudioLinesIcon, BookUserIcon, CogIcon, IdCardIcon, InfoIcon, LibraryBigIcon,
+    PawPrintIcon, Pyramid, RegexIcon, SmartphoneIcon
+} from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import * as React from 'react';
 
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
+import { NavMain } from '@/components/nav-main';
+import { NavProjects } from '@/components/nav-projects';
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar";
-import { useTranslations } from "next-intl";
+    Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail
+} from '@/components/ui/sidebar';
 
 const data = {
   navMain: [

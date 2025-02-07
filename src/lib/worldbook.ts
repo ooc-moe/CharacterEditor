@@ -1,13 +1,14 @@
-import { CharacterBookTable, db } from "@/db/schema";
-import { useRouter } from "@/i18n/routing";
-import { selectedCharacterBookIdAtom } from "@/store/action";
-import { useLiveQuery } from "dexie-react-hooks";
-import { omit } from "es-toolkit/compat";
-import saveAs from "file-saver";
-import { useAtom } from "jotai";
-import { useTranslations } from "next-intl";
-import { useEffect } from "react";
-import { toast } from "sonner";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { omit } from 'es-toolkit/compat';
+import saveAs from 'file-saver';
+import { useAtom } from 'jotai';
+import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+
+import { CharacterBookTable, db } from '@/db/schema';
+import { useRouter } from '@/i18n/routing';
+import { selectedCharacterBookIdAtom } from '@/store/action';
 
 export async function addCharacterBook(name: string) {
   try {

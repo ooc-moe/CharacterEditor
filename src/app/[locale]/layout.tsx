@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import './globals.css';
 
 import { NextIntlClientProvider } from 'next-intl';
@@ -36,9 +35,13 @@ export default async function LocaleLayout({
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages();
-
+  const ANALYTICS_SRC = process.env.NEXT_PUBLIC_ANALYTICS_SRC ?? "";
+  const ANALYTICS_WEBSITE_ID = process.env.NEXT_PUBLIC_ANALYTICS_WEBSITE_ID ?? "";
   return (
     <html className="h-full" lang={locale} suppressHydrationWarning>
+      <head>
+        <script defer src={ANALYTICS_SRC} data-website-id={ANALYTICS_WEBSITE_ID}></script>
+      </head>
       <body className="h-full antialiased">
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider

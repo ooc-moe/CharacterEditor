@@ -1,4 +1,4 @@
-import Dexie, { type EntityTable } from "dexie";
+import Dexie, { EntityTable, type } from 'dexie';
 
 interface CharacterTable {
   id: number

@@ -1,8 +1,9 @@
-import { db, RegexScriptsTable } from "@/db/schema";
-import { useLiveQuery } from "dexie-react-hooks";
-import { toast } from "sonner";
-import { v4 as uuidv4 } from "uuid";
-import { z } from "zod";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { toast } from 'sonner';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
+
+import { db, RegexScriptsTable } from '@/db/schema';
 
 const regexScriptsTableSchema = z.object({
   id: z.string(),

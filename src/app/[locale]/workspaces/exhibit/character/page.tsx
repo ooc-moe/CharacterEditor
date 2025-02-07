@@ -1,57 +1,33 @@
 "use client";
 export const runtime = 'edge';
-import { atom, useAtom } from "jotai";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { identity } from 'es-toolkit';
+import { atom, useAtom } from 'jotai';
+import { DivideCircle, EllipsisVerticalIcon, ImportIcon, PlusIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { list } from 'postcss';
+import React, { useEffect, useState } from 'react';
+import Cropper from 'react-easy-crop';
+import { toast } from 'sonner';
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
+    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+    AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Input } from '@/components/ui/input';
+import { db } from '@/db/schema';
+import { useRouter } from '@/i18n/routing';
 import {
-  addCharacter,
-  changeCharacterCover,
-  copyCharacter,
-  deleteCharacter,
-  getAllCharacterLists,
-  getCharacterField,
-  importCharacter,
-} from "@/lib/character";
-import { selectedCharacterIdAtom } from "@/store/action";
-import { useRouter } from "@/i18n/routing";
-import { toast } from "sonner";
-import { list } from "postcss";
-import {
-  DivideCircle,
-  EllipsisVerticalIcon,
-  ImportIcon,
-  PlusIcon,
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/db/schema";
-import Cropper from "react-easy-crop";
-import { useTranslations } from "next-intl";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { identity } from "es-toolkit";
+    addCharacter, changeCharacterCover, copyCharacter, deleteCharacter, getAllCharacterLists,
+    getCharacterField, importCharacter
+} from '@/lib/character';
+import { selectedCharacterIdAtom } from '@/store/action';
 
 const addCharacterModalAtom = atom(false);
 const characterCoverModalAtom = atom(false);

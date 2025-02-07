@@ -1,13 +1,13 @@
 "use client";
 export const runtime = 'edge';
-import { Link, useRouter } from "@/i18n/routing";
-import { getCharacterField, usePageGuard } from "@/lib/character";
-import { selectedCharacterIdAtom } from "@/store/action";
-import { useAtom } from "jotai";
-import { ArrowRightIcon, UserPenIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useAtom } from 'jotai';
+import { ArrowRightIcon, ClapperboardIcon, FileUserIcon, HammerIcon, HistoryIcon, MessageSquareIcon, MessageSquareTextIcon, MessagesSquareIcon, NotebookTextIcon, TagIcon, VenetianMaskIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+
+import { useRouter } from '@/i18n/routing';
+import { getCharacterField, usePageGuard } from '@/lib/character';
+import { selectedCharacterIdAtom } from '@/store/action';
 
 function page() {
   usePageGuard();
@@ -25,38 +25,62 @@ const navlists = [
   {
     name: "Character.creator_notes",
     path: "creator_notes",
-    desc: "66",
-    icon: UserPenIcon,
+    desc: "Creator Notes",
+    icon: NotebookTextIcon,
   },
   {
     name: "Character.first_mes",
     path: "first_mes",
-    desc: "66",
-    icon: UserPenIcon,
+    desc: "First Message",
+    icon: MessageSquareIcon,
   },
   {
-    name: "Character.alternate_greetings",
+    name: "Character.alternate_grettings",
     path: "alternate_greetings",
-    desc: "7",
-    icon: UserPenIcon,
+    desc: "Alternate Greetings",
+    icon: MessagesSquareIcon,
   },
   {
     name: "Character.description",
     path: "description",
-    desc: "66",
-    icon: UserPenIcon,
+    desc: "Description",
+    icon: FileUserIcon,
   },
   {
     name: "Character.mes_example",
     path: "mes_example",
-    desc: "5",
-    icon: UserPenIcon,
+    desc: "Mes Example",
+    icon: MessageSquareTextIcon,
   },
   {
-    name: "Character.",
-    path: "first_mes",
-    desc: "5",
-    icon: UserPenIcon,
+    name: "Character.personality",
+    path: "personality",
+    desc: "Personality",
+    icon: VenetianMaskIcon,
+  },
+  {
+    name: "Character.post_history_instructions",
+    path: "post_history_instructions",
+    desc: "Post History Instructions",
+    icon: HistoryIcon,
+  },
+  {
+    name: "Character.scenario",
+    path: "scenario",
+    desc: "Scenario",
+    icon: ClapperboardIcon,
+  },
+  {
+    name: "Character.system_prompt",
+    path: "system_prompt",
+    desc: "System_prompt",
+    icon: HammerIcon,
+  },
+  {
+    name: "Character.tags",
+    path: "tags",
+    desc: "Tags",
+    icon: TagIcon,
   }
 ];
 

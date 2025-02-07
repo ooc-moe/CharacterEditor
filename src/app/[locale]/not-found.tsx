@@ -1,5 +1,5 @@
-import { Link } from "@/i18n/routing"
- 
+import { Link } from '@/i18n/routing';
+
 export default function NotFound() {
   return (
     <div>

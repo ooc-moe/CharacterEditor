@@ -1,44 +1,29 @@
 "use client";
 export const runtime = 'edge';
-import React, { useEffect, useState } from "react";
+import { useLiveQuery } from 'dexie-react-hooks';
+import { debounce } from 'es-toolkit';
+import { atom, useAtom } from 'jotai';
+import { PlusIcon, Trash2Icon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { atom, useAtom } from "jotai";
-import { selectedCharacterIdAtom } from "@/store/action";
-import { useRouter } from "@/i18n/routing";
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
-  addCharacterGreetings,
-  deleteCharacterGreetings,
-  getCharacterField,
+  Select, SelectContent, SelectGroup, SelectItem,
+  SelectTrigger, SelectValue
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { db } from '@/db/schema';
+import {
+  addCharacterGreetings, deleteCharacterGreetings,
   updateCharacterGreeting,
-  usePageGuard,
-} from "@/lib/character";
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/db/schema";
-import { Textarea } from "@/components/ui/textarea";
-import { debounce } from "es-toolkit";
-import { PlusIcon, Trash2Icon } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { useTranslations } from "next-intl";
-import { toast } from "sonner";
+  usePageGuard
+} from '@/lib/character';
+import { selectedCharacterIdAtom } from '@/store/action';
 
 const greetingIndexAtom = atom<string | null>("null");
 const deleteModalAtom = atom(false);
@@ -72,7 +57,7 @@ function Header() {
   const handleAddCharacterGreetings = async () => {
     addCharacterGreetings(cid as number);
   };
-
+  const t = useTranslations()
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -86,7 +71,7 @@ function Header() {
         {lists && lists.length > 0 ? (
           <Select onValueChange={(value) => setIndex(value)}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a fruit" />
+              <SelectValue placeholder={t("select greetings")} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -124,7 +109,7 @@ function Alternate_Greetings() {
       value as string
     );
   }, 1000);
-
+  const t = useTranslations()
   useEffect(() => {
     const fetchData = async () => {
       const rows = await db.character.get(cid).then((item) => {
@@ -149,7 +134,7 @@ function Alternate_Greetings() {
           }}
           value={greeting}
           className="h-full mt-4"
-          placeholder="Type your message here."
+          placeholder={t("type messages")}
         />
       ) : (
         <></>

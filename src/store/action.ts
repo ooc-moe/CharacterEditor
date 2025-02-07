@@ -1,4 +1,4 @@
-import { atom, useAtom } from "jotai";
+import { atom, useAtom } from 'jotai';
 
 export const selectedCharacterIdAtom = atom<number>(0)
 export const selectedCharacterBookIdAtom = atom<number>(0)

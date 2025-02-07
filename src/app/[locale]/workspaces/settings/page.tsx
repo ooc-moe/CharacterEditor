@@ -1,13 +1,14 @@
+import { useTranslations } from 'next-intl';
 import React from 'react';
-export const runtime = 'edge';
+
+import { LanguageToggle } from '@/components/language-toggle';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 import {
     Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from '@/components/ui/select';
-import { LanguageToggle } from '@/components/language-toggle';
-import { useTranslations } from 'next-intl';
 
+export const runtime = 'edge';
 function page() {
   return (
     <>

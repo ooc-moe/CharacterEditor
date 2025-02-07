@@ -1,7 +1,8 @@
 'use client'
 
-import { ExpandableTabs } from "@/components/ui/expandable-tabs";
-import { BookUserIcon, IdCardIcon, LibraryBigIcon, PencilRulerIcon, RegexIcon } from "lucide-react";
+import { BookUserIcon, IdCardIcon, LibraryBigIcon, PencilRulerIcon, RegexIcon } from 'lucide-react';
+
+import { ExpandableTabs } from '@/components/ui/expandable-tabs';
 
 export default function NavPhone() {
   const tabs = [
