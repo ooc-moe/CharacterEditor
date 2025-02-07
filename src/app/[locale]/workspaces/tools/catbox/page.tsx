@@ -125,7 +125,7 @@ function NewGalleryModal() {
     <AlertDialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("ays")}</AlertDialogTitle>
+          <AlertDialogTitle>{t("give_name")}</AlertDialogTitle>
           <AlertDialogDescription>
             <Input value={input} onChange={(e) => setInput(e.target.value)} />
           </AlertDialogDescription>
