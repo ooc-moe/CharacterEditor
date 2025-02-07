@@ -226,7 +226,7 @@ export  function OoCMoe() {
 
   useEffect(() => {
     const rows = localStorage.getItem("oocmoe");
-    if (rows !== "seen") {3
+    if (rows !== "seen") {
       setIsOpen(true);
     }
   }, []);
