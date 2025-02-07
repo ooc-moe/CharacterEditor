@@ -1,12 +1,12 @@
-import React from "react";
-import CharacterWorldBooks from "../../_components/UI/CharacterWorldBooks";
+import React from 'react';
 
 function page() {
   return (
-    <>
-      <CharacterWorldBooks />
-    </>
-  );
+    <div>page</div>
+  )
 }
 
-export default page;
+export default page
+
+
+

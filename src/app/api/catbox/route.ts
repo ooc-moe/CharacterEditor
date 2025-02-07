@@ -1,30 +1,54 @@
+"use server";
+import { z } from "zod";
+
+const formDataSchema = z.object({
+  name: z.string(),
+  file: z.instanceof(File),
+});
+
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
-    const reqtype = formData.get("reqtype");
-    if (reqtype !== "fileupload") {
-      return new Response("Invalid request type", { status: 200 });
+    if (!formData) return new Response("!ERROR")
+
+    const name = formData.get("name");
+    const file = formData.get("file");
+
+    if (!name || !file) {
+      return new Response("!ERROR")
     }
-    const file = formData.get("fileToUpload") as File | null;
-    if (!file) {
-      return new Response("No file uploaded", { status: 200 });
+
+    const result = await formDataSchema.safeParseAsync({ name, file });
+    if (!result.success) {
+      return new Response("!ERROR")
     }
-    if (!file.name.endsWith(".webp")) {
-      return new Response("File must be a .webp", { status: 200 });
-    }
-    const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
-    if (file.size > maxSizeInBytes) {
-      return new Response("File size exceeds 1MB", { status: 200 });
-    }
-    const res = await fetch("https://catbox.moe/user/api.php", {
+
+    const catboxForm = new FormData();
+    catboxForm.append("reqtype", "fileupload");
+    catboxForm.append("fileToUpload", file);
+
+    const catbox = await fetch("https://catbox.moe/user/api.php", {
       method: "POST",
-      body: formData,
+      body: catboxForm,
     });
 
-    const responseText = await res.text();
-    return new Response(responseText);
-  } catch (error) {
-    console.error(error);
-    return new Response("error", { status: 200 });
+    if (!catbox.ok) {
+      return new Response("!ERROR")
+    }
+
+    const catboxUrl = await catbox.text(); 
+
+    if (!catboxUrl) {
+      return new Response("!ERROR")
+    }
+    const res ={
+      name:name,
+      url:catboxUrl
+    }
+    return new Response(JSON.stringify(res))
+    
+  } catch (e) {
+    console.error(e);
+    return new Response("!ERROR")
   }
 }

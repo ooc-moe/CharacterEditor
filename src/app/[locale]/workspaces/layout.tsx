@@ -1,220 +1,70 @@
 "use client";
 
-import { usePathname } from "../../../i18n/routing";
-import { Link } from "../_components/Catalyst/link";
-import { Navbar } from "../_components/Catalyst/navbar";
-import {
-  Sidebar,
-  SidebarBody,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarHeading,
-  SidebarItem,
-  SidebarLabel,
-  SidebarSection,
-  SidebarSpacer,
-} from "../_components/Catalyst/sidebar";
-import { SidebarLayout } from "../_components/Catalyst/sidebar-layout";
-import {
-  BookImageIcon,
-  CogIcon,
-  EarthIcon,
-  FileJson2,
-  IdCardIcon,
-  LayoutGridIcon,
-  MessageSquareQuoteIcon,
-  MessagesSquareIcon,
-  PencilRulerIcon,
-  RegexIcon,
-  StarIcon,
-  TentTree,
-  XIcon,
-} from "lucide-react";
-import { useTranslations } from "next-intl";
-import { SnackbarProvider,closeSnackbar } from "notistack";
-import ScrollToTopButton from "../_components/Reuse/ScrollToTopButton";
-import { useEffect } from "react";
-import Image from "next/image";
 
-export default function WorkSpacesLayout({
+import { AppSidebar } from '@/components/app-sidebar';
+import { ModeToggle } from '@/components/mode-toggle';
+import NavPhone from '@/components/nav-phone';
+import {
+  Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator
+} from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { Toaster } from '@/components/ui/sonner';
+
+import { usePathname } from '@/i18n/routing';
+
+export default function WorkspaceLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark =
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
-
-  const pathname = usePathname();
-  const isCurrent = (href: string) => pathname === href;
-
-  const t = useTranslations("SideBarLayout");
-
+  const segments = usePathname().split("/").filter(Boolean);
   return (
-    <SnackbarProvider
-      autoHideDuration={5000}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      action={(snackbarId) => (
-        <button onClick={() => closeSnackbar(snackbarId)}>
-          <XIcon />
-        </button>
-      )}
-    >
-      <SidebarLayout
-        sidebar={
-          <Sidebar>
-            {/* Logo */}
-            <div className="mb-2 flex">
-              <Link href="#" aria-label="Home"></Link>
+    <>
+      <div className="h-full hidden md:block">
+        <SidebarProvider className="h-full">
+          <AppSidebar />
+          <SidebarInset>
+            <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 justify-between">
+              <div className="flex items-center gap-2 px-4">
+                <SidebarTrigger className="-ml-1" />
+                <Separator orientation="vertical" className="mr-2 h-4" />
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    {segments.map((segment, index) => (
+                      <div key={index} className="flex items-center">
+                        <BreadcrumbItem className="hidden md:block">
+                          <BreadcrumbLink>{segment}</BreadcrumbLink>
+                        </BreadcrumbItem>
+                        {index < segments.length - 1 && (
+                          <BreadcrumbSeparator className="hidden md:block" />
+                        )}
+                      </div>
+                    ))}
+                  </BreadcrumbList>
+                </Breadcrumb>
+              </div>
+              <div className="px-4">
+                <ModeToggle />
+              </div>
+            </header>
+            <div className="h-full overflow-y-hidden flex flex-1 flex-col gap-4 p-4 pt-0">
+              <div className="h-full flex-1 flex flex-col rounded-xl bg-muted/50 p-4 xl:p-8">
+                {children}
+              </div>
             </div>
+          </SidebarInset>
+        </SidebarProvider>
+      </div>
 
-            {/* Header */}
-            <SidebarHeader>
-              <SidebarSection>
-                <SidebarItem
-                  href="/workspaces"
-                  current={isCurrent("/workspaces")}
-                >
-                  <LayoutGridIcon />
-                  <SidebarLabel>{t("workbenches")}</SidebarLabel>
-                </SidebarItem>
-              </SidebarSection>
-            </SidebarHeader>
-
-            {/* Content */}
-            <SidebarBody>
-              <SidebarSection>
-                <SidebarHeading>{t("character")}</SidebarHeading>
-                <SidebarItem
-                  href="/workspaces/description"
-                  current={isCurrent("/workspaces/description")}
-                >
-                  <IdCardIcon />
-                  <SidebarLabel>{t("character-description")}</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem
-                  href="/workspaces/firstmessage"
-                  current={isCurrent("/workspaces/firstmessage")}
-                >
-                  <MessageSquareQuoteIcon />
-                  <SidebarLabel>{t("firstmessage")}</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem
-                  href="/workspaces/greetings"
-                  current={isCurrent("/workspaces/greetings")}
-                >
-                  <MessagesSquareIcon />
-                  <SidebarLabel>{t("greeting")}</SidebarLabel>
-                </SidebarItem>
-
-                <SidebarItem
-                  href="/workspaces/advancedDefinitions"
-                  current={isCurrent("/workspaces/advancedDefinitions")}
-                >
-                  <PencilRulerIcon />
-                  <SidebarLabel>{t("advanced")}</SidebarLabel>
-                </SidebarItem>
-
-                <SidebarItem
-                  href="/workspaces/worldbook"
-                  current={isCurrent("/workspaces/worldbook")}
-                >
-                  <EarthIcon />
-                  <SidebarLabel>{t("worldBook")}</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem
-                  href="/workspaces/regex"
-                  current={isCurrent("/workspaces/regex")}
-                >
-                  <RegexIcon />
-                  <SidebarLabel>{t("regex")}</SidebarLabel>
-                </SidebarItem>
-              </SidebarSection>
-
-              <SidebarSpacer />
-
-              <SidebarSection>
-                <SidebarHeading>{t("tools")}</SidebarHeading>
-                <SidebarItem
-                  href="/workspaces/inset"
-                  current={isCurrent("/workspaces/inset")}
-                >
-                  <BookImageIcon />
-                  <SidebarLabel>
-                    {t("inset")}{" "}
-                    <span className="inline-flex items-center rounded-full bg-yellow-100 px-1.5 py-0.5 text-xs font-medium text-yellow-800">
-                      PC Beta
-                    </span>
-                  </SidebarLabel>
-                </SidebarItem>
-                <SidebarItem
-                  href="/workspaces/convertor"
-                  current={isCurrent("/workspaces/convertor")}
-                >
-                  <FileJson2 />
-                  <SidebarLabel>
-                    {t("convertor")}
-                    {" "}
-                  </SidebarLabel>
-                </SidebarItem>
-              </SidebarSection>
-
-              <SidebarSection>
-                <SidebarHeading>{t("other")}</SidebarHeading>
-                <SidebarItem
-                  href="https://github.com/ooctalk/CharacterEditor"
-                  target="_blank"
-                >
-                  <StarIcon />
-                  <SidebarLabel>{t("project-address")}</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem href="https://ooctalk.com" target="_blank">
-                  <TentTree />
-                  <Image
-                  className="w-24"
-                  src='/logo.webp'
-                  alt='ooctalk'
-                  width={384}
-                  height={384}
-                  />
-                </SidebarItem>
-              </SidebarSection>
-            </SidebarBody>
-
-            {/* Footer */}
-            <SidebarFooter>
-              <SidebarSection>
-                <SidebarItem
-                  href="/workspaces/settings"
-                  current={isCurrent("/workspaces/settings")}
-                >
-                  <CogIcon />
-                  <SidebarLabel>{t("settings")}</SidebarLabel>
-                </SidebarItem>
-              </SidebarSection>
-            </SidebarFooter>
-          </Sidebar>
-        }
-        navbar={<Navbar>{/* Navbar content */}</Navbar>}
-      >
-        <section>
-          {/* Page content */}
-          {children}
-
-          <ScrollToTopButton />
-        </section>
-      </SidebarLayout>
-    </SnackbarProvider>
+      <div className="md:hidden flex flex-col h-full">
+        <div className="flex-1 overflow-auto pb-16 p-2">{children}</div>
+        <div className="fixed bottom-0 left-0 right-0 m-2 shrink-0 pb-safe">
+          <NavPhone />
+        </div>
+      </div>
+      <Toaster richColors position="top-center" />
+    </>
   );
 }
+

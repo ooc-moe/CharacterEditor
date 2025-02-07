@@ -1,9 +1,12 @@
-import "../globals.css";
-// next-intl
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getTranslations } from "next-intl/server";
-import { notFound } from "next/navigation";
-import { routing } from "../../i18n/routing";
+import type { Metadata } from "next";
+import './globals.css';
+
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, getTranslations } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+
+import { ThemeProvider } from '@/components/theme-provider';
+import { routing } from '@/i18n/routing';
 
 export async function generateMetadata({
   params: { locale },
@@ -18,13 +21,13 @@ export async function generateMetadata({
   };
 }
 
-export default async function RootLayout({
+export default async function LocaleLayout({
   children,
   params: { locale },
-}: Readonly<{
+}: {
   children: React.ReactNode;
   params: { locale: string };
-}>) {
+}) {
   // Ensure that the incoming `locale` is valid
   if (!routing.locales.includes(locale as any)) {
     notFound();
@@ -34,18 +37,19 @@ export default async function RootLayout({
   // side is the easiest way to get started
   const messages = await getMessages();
 
-  const ANALYTICS_SRC = process.env.NEXT_PUBLIC_ANALYTICS_SRC ?? "";
-  const ANALYTICS_WEBSITE_ID = process.env.NEXT_PUBLIC_ANALYTICS_WEBSITE_ID ?? "";    
   return (
-    <html lang={locale}>
-      <head>
-        <script defer src={ANALYTICS_SRC} data-website-id={ANALYTICS_WEBSITE_ID}></script>
-      </head>
-      <body
-        className={`antialiased bg-zinc-100 dark:bg-zinc-900 lg:dark:bg-zinc-950 text-black dark:text-white`}
-      >
+    <html className="h-full" lang={locale} suppressHydrationWarning>
+      <body className="h-full antialiased">
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
