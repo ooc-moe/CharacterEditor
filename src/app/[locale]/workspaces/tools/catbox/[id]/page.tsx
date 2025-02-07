@@ -1,4 +1,5 @@
 "use client";
+export const runtime = 'edge';
 import { Button, buttonVariants } from "@/components/ui/button";
 import { addGalleryItem, deleteGalleryItem, getGallyList } from "@/lib/gallery";
 import { atom, useAtom } from "jotai";

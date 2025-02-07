@@ -1,4 +1,5 @@
 "use client";
+export const runtime = 'edge';
 import { atom, useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";

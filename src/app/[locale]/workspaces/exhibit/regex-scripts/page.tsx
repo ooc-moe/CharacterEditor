@@ -1,4 +1,5 @@
 "use client";
+export const runtime = 'edge';
 import { db } from "@/db/schema";
 import {
   addRegexScript,

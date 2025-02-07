@@ -1,6 +1,6 @@
 import { ModeToggle } from '@/components/mode-toggle';
 import { Link } from '@/i18n/routing';
-
+export const runtime = 'edge';
 export default function Home() {
   return (
     <>

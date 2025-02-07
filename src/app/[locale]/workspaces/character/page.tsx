@@ -1,4 +1,5 @@
 "use client";
+export const runtime = 'edge';
 import { Link, useRouter } from "@/i18n/routing";
 import { getCharacterField, usePageGuard } from "@/lib/character";
 import { selectedCharacterIdAtom } from "@/store/action";

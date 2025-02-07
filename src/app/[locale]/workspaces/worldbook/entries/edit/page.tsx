@@ -1,4 +1,5 @@
 "use client";
+export const runtime = 'edge';
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslations } from "next-intl";

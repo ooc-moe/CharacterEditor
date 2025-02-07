@@ -1,4 +1,5 @@
 'use client'
+export const runtime = 'edge';
 import { Button } from '@/components/ui/button';
 import { Link, useRouter } from '@/i18n/routing';
 import { ArrowRightIcon, CogIcon, InfoIcon, RegexIcon, UserPenIcon } from 'lucide-react';

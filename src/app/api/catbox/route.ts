@@ -1,4 +1,5 @@
 "use server";
+export const runtime = 'edge';
 import { z } from "zod";
 
 const formDataSchema = z.object({

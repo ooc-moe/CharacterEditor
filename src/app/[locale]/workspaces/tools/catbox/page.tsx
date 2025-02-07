@@ -1,4 +1,5 @@
 'use client'
+export const runtime = 'edge';
 import { Button, buttonVariants } from "@/components/ui/button";
 import { atom, useAtom } from "jotai";
 import { PlusIcon } from "lucide-react";

@@ -1,4 +1,5 @@
 "use client";
+export const runtime = 'edge';
 import { debounce } from 'es-toolkit';
 import { useAtom } from 'jotai';
 import React, { useEffect, useState } from 'react';

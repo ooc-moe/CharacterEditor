@@ -1,7 +1,7 @@
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-
+export const runtime = 'edge';
 function page() {
   const t = useTranslations()
   return (
