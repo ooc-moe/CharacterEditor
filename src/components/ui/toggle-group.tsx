@@ -1,6 +1,6 @@
 "use client"
 
-import { type, VariantProps } from 'class-variance-authority';
+import { VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { toggleVariants } from '@/components/ui/toggle';
@@ -58,4 +58,5 @@ const ToggleGroupItem = React.forwardRef<
 
 ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName
 
-export { ToggleGroup, ToggleGroupItem }
+export { ToggleGroup, ToggleGroupItem };
+

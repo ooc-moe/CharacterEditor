@@ -1,10 +1,10 @@
 "use client"
 
-import { LucideIcon, type } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import {
-    SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem
+  SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem
 } from '@/components/ui/sidebar';
 import { Link } from '@/i18n/routing';
 

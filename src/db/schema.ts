@@ -1,4 +1,4 @@
-import Dexie, { EntityTable, type } from 'dexie';
+import Dexie, { EntityTable } from 'dexie';
 
 interface CharacterTable {
   id: number
@@ -97,5 +97,5 @@ db.version(1).stores({
   gallery:"++id"
 });
 
-export type { CharacterTable, CharacterBookTable, RegexScriptsTable };
 export { db };
+export type { CharacterBookTable, CharacterTable, RegexScriptsTable };
