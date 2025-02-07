@@ -1,6 +1,6 @@
 import "../globals.css";
 // next-intl
-import { NextIntlClientProvider } from "next-intl";
+import { NextIntlClientProvider, useTranslations } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
@@ -46,8 +46,11 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           {children}
+
         </NextIntlClientProvider>
       </body>
     </html>
   );
 }
+
+

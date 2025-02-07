@@ -1,6 +1,8 @@
 "use client";
-
-import { usePathname } from "../../../i18n/routing";
+import { Dialog, DialogActions, DialogBody, DialogDescription, DialogTitle } from "../_components/Catalyst/dialog";
+import { Button } from "../_components/Catalyst/button";
+import { useState } from "react";
+import { usePathname, useRouter } from "../../../i18n/routing";
 import { Link } from "../_components/Catalyst/link";
 import { Navbar } from "../_components/Catalyst/navbar";
 import {
@@ -31,7 +33,7 @@ import {
   XIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { SnackbarProvider,closeSnackbar } from "notistack";
+import { SnackbarProvider, closeSnackbar } from "notistack";
 import ScrollToTopButton from "../_components/Reuse/ScrollToTopButton";
 import { useEffect } from "react";
 import Image from "next/image";
@@ -43,8 +45,9 @@ export default function WorkSpacesLayout({
 }) {
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    const prefersDark =
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
 
     if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
       document.documentElement.classList.add("dark");
@@ -163,31 +166,27 @@ export default function WorkSpacesLayout({
                   current={isCurrent("/workspaces/convertor")}
                 >
                   <FileJson2 />
-                  <SidebarLabel>
-                    {t("convertor")}
-                    {" "}
-                  </SidebarLabel>
+                  <SidebarLabel>{t("convertor")} </SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
 
               <SidebarSection>
                 <SidebarHeading>{t("other")}</SidebarHeading>
                 <SidebarItem
-                  href="https://github.com/ooctalk/CharacterEditor"
+                  href="https://github.com/ooc-moe/CharacterEditor"
                   target="_blank"
                 >
                   <StarIcon />
                   <SidebarLabel>{t("project-address")}</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="https://ooctalk.com" target="_blank">
+                <SidebarItem href="https://ce.ooc.moe" target="_blank">
                   <TentTree />
-                  <Image
-                  className="w-24"
-                  src='/logo.webp'
-                  alt='ooctalk'
-                  width={384}
-                  height={384}
-                  />
+                  <SidebarLabel>
+                    ce.ooc.moe
+                    <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+                      New
+                    </span>
+                  </SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
             </SidebarBody>
@@ -211,10 +210,52 @@ export default function WorkSpacesLayout({
         <section>
           {/* Page content */}
           {children}
-
+          <OoCMoe />
           <ScrollToTopButton />
         </section>
       </SidebarLayout>
     </SnackbarProvider>
+  );
+}
+
+
+export  function OoCMoe() {
+  const router = useRouter();
+  const t = useTranslations();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const rows = localStorage.getItem("oocmoe");
+    if (rows !== "seen") {3
+      setIsOpen(true);
+    }
+  }, []);
+
+  const handleNoPrompt = () => {
+    localStorage.setItem("oocmoe", "seen");
+    setIsOpen(false);
+  };
+
+  return (
+    <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <DialogTitle>{t("try new site")}</DialogTitle>
+      ce.ooc.moe
+      <DialogDescription>
+        <Image 
+          height={500}
+          width={500} 
+          alt="ce.ooc.moe"
+          src="/oocmoe.webp"
+        />
+      </DialogDescription>
+      <DialogActions className="justify-between">
+        <Button plain onClick={handleNoPrompt}>
+          {t("No prompt")}
+        </Button>
+        <Button plain onClick={() => router.push("https://ce.ooc.moe")}>
+          {t("go")}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

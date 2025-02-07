@@ -85,7 +85,7 @@ function IndexBoostrap() {
           </Link>
           <Link
             className="animate-fade-up animate-delay-200 group flex gap-y-6 size-full hover:bg-gray-100 focus:outline-none focus:bg-gray-100 rounded-lg p-5 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-            href="https://github.com/ooctalk/CharacterEditor"
+            href="https://github.com/ooc-moe/CharacterEditor"
             target="_blanks"
           >
             <svg
@@ -133,7 +133,7 @@ function IndexBoostrap() {
 
           <Link
             className="animate-fade-up animate-delay-300 group flex gap-y-6 size-full hover:bg-gray-100 focus:outline-none focus:bg-gray-100 rounded-lg p-5 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-            href="https://ooctalk.com"
+            href="https://ooc.moe"
             target="_blank"
           >
             <svg
@@ -162,7 +162,7 @@ function IndexBoostrap() {
               </div>
 
               <p className="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                OoCTalk
+                OoC Moe
                 <svg
                   className="shrink-0 size-4 transition ease-in-out group-hover:translate-x-1 group-focus:translate-x-1"
                   xmlns="http://www.w3.org/2000/svg"
@@ -183,7 +183,7 @@ function IndexBoostrap() {
 
           <Link
             className="animate-fade-up animate-delay-[400ms] group flex gap-y-6 size-full hover:bg-gray-100 focus:outline-none focus:bg-gray-100 rounded-lg p-5 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-            href="https://status.ooctalk.com"
+            href="https://status.ooc.moe"
             target="_blanks"
           >
             <svg
