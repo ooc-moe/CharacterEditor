@@ -1,8 +1,9 @@
 "use client";
 
 import {
-    AmphoraIcon, AudioLinesIcon, BookUserIcon, CogIcon, IdCardIcon, InfoIcon, LibraryBigIcon,
-    PawPrintIcon, Pyramid, RegexIcon, SmartphoneIcon
+  AmphoraIcon,
+  CogIcon, IdCardIcon, InfoIcon,
+  PawPrintIcon, Pyramid
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
@@ -10,7 +11,7 @@ import * as React from 'react';
 import { NavMain } from '@/components/nav-main';
 import { NavProjects } from '@/components/nav-projects';
 import {
-    Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail
+  Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail
 } from '@/components/ui/sidebar';
 
 const data = {
@@ -81,18 +82,6 @@ const data = {
           title: "tags",
           url: "/workspaces/character/tags",
         },
-      ],
-    },
-    {
-      title: "worldbook",
-      url: "#",
-      icon: LibraryBigIcon,
-      isActive: true,
-      items: [
-        {
-          title: "entries",
-          url: "/workspaces/worldbook/entries",
-        }
       ],
     }
   ],

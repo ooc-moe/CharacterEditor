@@ -1,14 +1,9 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-import { omit } from 'es-toolkit/compat';
-import saveAs from 'file-saver';
-import { useAtom } from 'jotai';
-import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
-import { toast } from 'sonner';
+import { useLiveQuery } from "dexie-react-hooks";
+import { omit } from "es-toolkit/compat";
+import saveAs from "file-saver";
+import { toast } from "sonner";
 
-import { CharacterBookTable, db } from '@/db/schema';
-import { useRouter } from '@/i18n/routing';
-import { selectedCharacterBookIdAtom } from '@/store/action';
+import { CharacterBookTable, db } from "@/db/schema";
 
 export async function addCharacterBook(name: string) {
   try {
@@ -70,22 +65,22 @@ export async function getCharacterBookEntries(bid: number, eid: number) {
 }
 
 export async function updateCharacterBookEntriesEnable(
-  eid: number,
-  bid: number
+  entryId: number,
+  bookId: number
 ) {
   try {
-    const entrys = await getCharacterBook(bid);
+    const entrys = await getCharacterBook(bookId);
     if (!entrys || !entrys.entries) {
       console.log("Entries not found");
       return;
     }
-    const index = entrys.entries.findIndex((entry) => entry.id === eid);
+    const index = entrys.entries.findIndex((entry) => entry.id === entryId);
     if (index === -1) {
       console.log("Entry not found");
       return;
     }
     entrys.entries[index].enabled = !entrys.entries[index].enabled;
-    await db.characterBook.update(bid, { entries: entrys.entries });
+    await db.characterBook.update(bookId, { entries: entrys.entries });
     console.log("Entry updated successfully");
   } catch (e) {
     console.error("Error updating entry:", e);
@@ -147,21 +142,6 @@ export async function addCharacterBookEntries(id: number) {
   }
 }
 
-export function usePageGuard() {
-  const t = useTranslations();
-  const router = useRouter();
-  const [cid] = useAtom(selectedCharacterBookIdAtom);
-
-  useEffect(() => {
-    if (!cid) {
-      toast.warning(t("selectWID"), {
-        id: "WORLDBOOK_PAGE_GUARD",
-      });
-      router.push("/workspaces/exhibit/worldbook");
-    }
-  }, [cid, router]);
-}
-
 export async function exportWorldBook(id: number) {
   try {
     const rows: CharacterBookTable | undefined = await db.characterBook.get(id);
@@ -170,7 +150,7 @@ export async function exportWorldBook(id: number) {
     const formattedData = {
       entries: Object.fromEntries(
         rows.entries.map((entry, index) => [
-          String(index), 
+          String(index),
           {
             uid: entry.id ?? index,
             key: entry.keys || [],
@@ -178,39 +158,39 @@ export async function exportWorldBook(id: number) {
             comment: entry.comment || "",
             content: entry.content || "",
             constant: entry.constant ?? false,
-            vectorized: false, 
+            vectorized: false,
             selective: entry.selective ?? true,
             selectiveLogic: 0,
-            addMemo: true, 
+            addMemo: true,
             order: entry.priority ?? 100,
-            position: 0, 
+            position: 0,
             disable: !entry.enabled,
-            excludeRecursion: false, 
+            excludeRecursion: false,
             preventRecursion: false,
-            delayUntilRecursion: false, 
-            probability: 100, 
+            delayUntilRecursion: false,
+            probability: 100,
             useProbability: true,
             depth: rows.scan_depth ?? 4,
-            group: "", 
+            group: "",
             groupOverride: false,
             groupWeight: 100,
             scanDepth: rows.scan_depth ?? null,
             caseSensitive: entry.case_sensitive ?? null,
-            matchWholeWords: null, 
-            useGroupScoring: null, 
-            automationId: "", 
-            role: null, 
-            sticky: 0, 
+            matchWholeWords: null,
+            useGroupScoring: null,
+            automationId: "",
+            role: null,
+            sticky: 0,
             cooldown: 0,
             delay: 0,
-            displayIndex: index, 
+            displayIndex: index,
           },
         ])
       ),
     };
 
     const jsonString = JSON.stringify(formattedData, null, 2);
-    
+
     const blob = new Blob([jsonString], { type: "application/json" });
 
     const fileName = rows.name ? `${rows.name}.json` : "worldbook.json";
@@ -243,30 +223,32 @@ export async function importCharacterBook() {
         }
         const characterBook: Omit<CharacterBookTable, "id"> = {
           name: file.name.replace(".json", ""),
-          description: "", 
-          scan_depth: parsedData.entries?.[0]?.depth ?? 4, 
+          description: "",
+          scan_depth: parsedData.entries?.[0]?.depth ?? 4,
           token_budget: undefined,
-          recursive_scanning: undefined, 
-          extensions: {}, 
-          entries: Object.values(parsedData.entries || {}).map((entry: any, index) => ({
-            keys: entry.key || [],
-            content: entry.content || "",
-            extensions: {},
-            enabled: !entry.disable, 
-            insertion_order: entry.order ?? 100,
-            case_sensitive: entry.caseSensitive ?? undefined,
-            name: undefined, 
-            priority: entry.order ?? 100,
-            id: undefined, 
-            comment: entry.comment || "",
-            selective: entry.selective ?? true,
-            secondary_keys: entry.keysecondary || [],
-            constant: entry.constant ?? false,
-            position: "after_char", 
-          })),
+          recursive_scanning: undefined,
+          extensions: {},
+          entries: Object.values(parsedData.entries || {}).map(
+            (entry: any, index) => ({
+              keys: entry.key || [],
+              content: entry.content || "",
+              extensions: {},
+              enabled: !entry.disable,
+              insertion_order: entry.order ?? 100,
+              case_sensitive: entry.caseSensitive ?? undefined,
+              name: undefined,
+              priority: entry.order ?? 100,
+              id: undefined,
+              comment: entry.comment || "",
+              selective: entry.selective ?? true,
+              secondary_keys: entry.keysecondary || [],
+              constant: entry.constant ?? false,
+              position: "after_char",
+            })
+          ),
         };
-        db.characterBook.add(characterBook)
-        toast.success("OK")
+        db.characterBook.add(characterBook);
+        toast.success("OK");
       };
       input.click();
     };
@@ -277,15 +259,14 @@ export async function importCharacterBook() {
   }
 }
 
-
-export async function copyWorldBook(id:number){
-  try{
-    const rows = await db.characterBook.get(id)
-    if(!rows) return
-    const book = omit(rows,["id"])
-    db.characterBook.add(book)
-    toast.success("OK")
-  }catch(e){
-    console.log(e)
+export async function copyWorldBook(id: number) {
+  try {
+    const rows = await db.characterBook.get(id);
+    if (!rows) return;
+    const book = omit(rows, ["id"]);
+    db.characterBook.add(book);
+    toast.success("OK");
+  } catch (e) {
+    console.log(e);
   }
 }

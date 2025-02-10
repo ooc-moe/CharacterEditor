@@ -1,31 +1,27 @@
 "use client";
 export const runtime = 'edge';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { identity } from 'es-toolkit';
 import { atom, useAtom } from 'jotai';
-import { DivideCircle, EllipsisVerticalIcon, ImportIcon, PlusIcon } from 'lucide-react';
+import { EllipsisVerticalIcon, ImportIcon, PlusIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { list } from 'postcss';
 import React, { useEffect, useState } from 'react';
-import Cropper from 'react-easy-crop';
 import { toast } from 'sonner';
 
 import {
-    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
-    AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
 } from '@/components/ui/alert-dialog';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
-    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Input } from '@/components/ui/input';
 import { db } from '@/db/schema';
 import { useRouter } from '@/i18n/routing';
 import {
-    addCharacter, changeCharacterCover, copyCharacter, deleteCharacter, getAllCharacterLists,
-    getCharacterField, importCharacter
+  addCharacter,
+  copyCharacter, deleteCharacter, getAllCharacterLists,
+  importCharacter
 } from '@/lib/character';
 import { selectedCharacterIdAtom } from '@/store/action';
 
@@ -84,7 +80,7 @@ function CharacterLists() {
   };
   const handleActionCharacter = (id: number, name: string) => {
     setActionCharacterId(id);
-    toast.success("select " + name, {
+    toast.success(t("selected") + name, {
       id: "actionCharacter",
     });
   };

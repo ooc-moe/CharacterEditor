@@ -51,7 +51,8 @@
   "WorldBook": {
     "keys": "触发关键词",
     "secondary_keys": "第二关键词",
-    "keys_placeholder": "关键词1,关键词2,关键词3..."
+    "keys_placeholder": "关键词1,关键词2,关键词3...",
+    "second_keys": "次要触发关键词"
   },
   "Regex": {
     "find_regex": "正则匹配",
@@ -98,5 +99,8 @@
   "gallery_list": "画廊列表",
   "faq": "提问反馈",
   "select greetings": "选择开场白",
-  "type messages": "请输入内容"
+  "type messages": "请输入内容",
+  "switch": "开关",
+  "main": "主要",
+  "other": "其它"
 }

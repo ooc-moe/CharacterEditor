@@ -1,29 +1,29 @@
 "use client";
 export const runtime = 'edge';
-import { useLiveQuery } from 'dexie-react-hooks';
 import { atom, useAtom } from 'jotai';
-import { ImportIcon, PlusIcon } from 'lucide-react';
+import { EllipsisVerticalIcon, ImportIcon, PlusIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import {
-    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
-    AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
 } from '@/components/ui/alert-dialog';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
-    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
-    DropdownMenuTrigger
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import {
-    Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow
+  Table, TableBody,
+  TableCell,
+  TableHead, TableHeader, TableRow
 } from '@/components/ui/table';
-import { db } from '@/db/schema';
 import { useRouter } from '@/i18n/routing';
 import {
-    addRegexScript, deleteRegexxScript, getAllRegexScriptLists, importRegex
+  addRegexScript, deleteRegexxScript, getAllRegexScriptLists, importRegex
 } from '@/lib/regex';
 
 const addRegexScriptModalAtom = atom(false);
@@ -46,7 +46,7 @@ function Header() {
 
   return (
     <div className="flex justify-between">
-      <div>{t("regex_scripts")}</div>
+      <div>{t("regex_scripts")}🚧</div>
       <div className="flex gap-x-2">
         <Button
           onClick={() => setIsShowAddRegexScriptModal(true)}
@@ -76,6 +76,7 @@ function RegexList() {
       <TableHeader>
         <TableRow>
           <TableHead>{t("name")}</TableHead>
+          <TableHead className='text-right'>{t("action")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -84,7 +85,7 @@ function RegexList() {
             <TableCell>{list.scriptName}</TableCell>
             <TableCell className="text-right">
               <DropdownMenu>
-                <DropdownMenuTrigger>{t("action")}</DropdownMenuTrigger>
+                <DropdownMenuTrigger><Button variant="link" size="icon"><EllipsisVerticalIcon /></Button></DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                 <DropdownMenuItem
                     onClick={() => router.push(`/workspaces/regex/${list.id}`)}

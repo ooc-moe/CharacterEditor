@@ -1,35 +1,46 @@
 "use client";
-export const runtime = 'edge';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { useAtom } from 'jotai';
-import { EllipsisVerticalIcon, PlusIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+export const runtime = "edge";
+import { useLiveQuery } from "dexie-react-hooks";
+import { EllipsisVerticalIcon, PlusIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React, { useState } from "react";
 
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
-  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
-} from '@/components/ui/alert-dialog';
-import { Button, buttonVariants } from '@/components/ui/button';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { Switch } from '@/components/ui/switch';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Switch } from "@/components/ui/switch";
 import {
-  Table, TableBody,
+  Table,
+  TableBody,
   TableCell,
-  TableHead, TableHeader, TableRow
-} from '@/components/ui/table';
-import { CharacterBookTable, db } from '@/db/schema';
-import { useRouter } from '@/i18n/routing';
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { CharacterBookTable, db } from "@/db/schema";
+import { useRouter } from "@/i18n/routing";
 import {
-  addCharacterBookEntries, deleteCharacterBookEntries, updateCharacterBookEntriesEnable,
-  usePageGuard
-} from '@/lib/worldbook';
-import { selectedCharacterBookEntriesAtom, selectedCharacterBookIdAtom } from '@/store/action';
+  addCharacterBookEntries,
+  deleteCharacterBookEntries,
+  updateCharacterBookEntriesEnable,
+} from "@/lib/worldbook";
+import { useParams } from "next/navigation";
 
 function page() {
-  usePageGuard();
   return (
     <>
       <Header />
@@ -40,18 +51,15 @@ function page() {
 
 export default page;
 
-
-
-
-
 function Header() {
-  const [bookId] = useAtom(selectedCharacterBookIdAtom);
+  const t = useTranslations();
+  const params = useParams();
   const handleAddEntries = async () => {
-    addCharacterBookEntries(bookId as number);
+    addCharacterBookEntries(Number(params.bookId));
   };
   return (
     <div className="flex justify-between">
-      <div>Entries</div>
+      <div>{t("Nav.entries")}</div>
       <div className="flex gap-x-2">
         <Button onClick={handleAddEntries} variant="outline" size="icon">
           <PlusIcon />
@@ -62,10 +70,9 @@ function Header() {
 }
 
 function EntrieLists() {
-  const router = useRouter()
-  const t = useTranslations()
-  const [bookId] = useAtom(selectedCharacterBookIdAtom);
-  const [entriesId, setEntriesId] = useAtom(selectedCharacterBookEntriesAtom)
+  const router = useRouter();
+  const t = useTranslations();
+  const params = useParams();
   type EntryType = CharacterBookTable["entries"][number];
   const [entrieLists, setEntrieLists] = useState<EntryType[]>();
   const [deleteCharacterBookEntrieIndex, setDeleteCharacterBookEntrieIndex] =
@@ -75,12 +82,11 @@ function EntrieLists() {
     setIsDeleteCharacterBookEntrieModal,
   ] = useState(false);
 
-  const handleEditEntries = (eid: number) => {
-    setEntriesId(eid)
-    router.push("/workspaces/worldbook/entries/edit")
-  }
+  const handleEditEntries = (entryId: number) => {
+    router.push(`/workspaces/worldbook/${params.bookId}/entries/${entryId}`);
+  };
   const book = useLiveQuery(() => {
-    return db.characterBook.get(bookId).then((item) => {
+    return db.characterBook.get(Number(params.bookId)).then((item) => {
       if (item) {
         return item.entries;
       }
@@ -97,10 +103,9 @@ function EntrieLists() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Enable</TableHead>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+            <TableHead className="w-12">{t("switch")}</TableHead>
+            <TableHead>{t("name")}</TableHead>
+            <TableHead className="text-right">{t("action")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -108,16 +113,26 @@ function EntrieLists() {
             <>
               {book.map((list, index) => (
                 <TableRow key={index}>
-                  <TableCell ><EntriesEnableSwitch isEnabled={list.enabled} eid={list.id as number} /></TableCell>
-                  <TableCell className="font-medium">{index + 1}</TableCell>
-                  <TableCell className="font-medium">{list.name}</TableCell>
+                  <TableCell>
+                    <EntriesEnableSwitch
+                      isEnabled={list.enabled}
+                      entryIndex={index}
+                    />
+                  </TableCell>
+                  <TableCell>{list.comment}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="link" size="icon"><EllipsisVerticalIcon /></Button>
+                        <Button variant="link" size="icon">
+                          <EllipsisVerticalIcon />
+                        </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleEditEntries(index)}>{t("edit")}</DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleEditEntries(index)}
+                        >
+                          {t("edit")}
+                        </DropdownMenuItem>
                         <DropdownMenuItem>{t("export")}</DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleDeleteCharacterBookEntrie(index)}
@@ -154,8 +169,9 @@ function DeleteCharacterBookEntrieModal({
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
 }) {
-  const t = useTranslations()
-  const [bookId] = useAtom(selectedCharacterBookIdAtom);
+  const t = useTranslations();
+  const params = useParams();
+  const bookId = Number(params.id);
   const handleDeleteCharacter = async () => {
     deleteCharacterBookEntries(bookId as number, index);
     setIsOpen(false);
@@ -165,9 +181,7 @@ function DeleteCharacterBookEntrieModal({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{t("ays")}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {t("nrb")}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{t("nrb")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setIsOpen(false)}>
@@ -185,12 +199,17 @@ function DeleteCharacterBookEntrieModal({
   );
 }
 
-function EntriesEnableSwitch({isEnabled,eid}:{isEnabled:boolean,eid:number}){
-  const [bid] = useAtom(selectedCharacterBookIdAtom);
+function EntriesEnableSwitch({
+  isEnabled,
+  entryIndex,
+}: {
+  isEnabled: boolean;
+  entryIndex: number;
+}) {
+  const params = useParams();
+  const bookId = Number(params.bookId);
   const handleChange = async () => {
-    await updateCharacterBookEntriesEnable(eid,bid)
-  }
-  return(
-    <Switch checked={isEnabled} onChange={handleChange}/>
-  )
+    await updateCharacterBookEntriesEnable(entryIndex, bookId);
+  };
+  return <Switch checked={isEnabled} onClick={handleChange} />;
 }

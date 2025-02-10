@@ -124,6 +124,7 @@ function ImportModal() {
     db.gallery.update(Number(params.id), {
       content: entry,
     });
+    setIsShow(false)
     toast.success("Ok");
   };
 

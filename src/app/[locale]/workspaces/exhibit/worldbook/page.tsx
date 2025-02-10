@@ -1,38 +1,55 @@
 "use client";
-export const runtime = 'edge';
-import { atom, useAtom } from 'jotai';
-import { EllipsisVerticalIcon, ImportIcon, PlusIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+export const runtime = "edge";
+import { atom, useAtom } from "jotai";
+import { EllipsisVerticalIcon, ImportIcon, PlusIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 import {
-    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
-    AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
-} from '@/components/ui/alert-dialog';
-import { Button, buttonVariants } from '@/components/ui/button';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "@/components/ui/alert-dialog";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
-    Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
-    DialogTrigger
-} from '@/components/ui/dialog';
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
 import {
-    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
-    Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger
-} from '@/components/ui/menubar';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@/components/ui/table";
+import { useRouter } from "@/i18n/routing";
 import {
-    Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow
-} from '@/components/ui/table';
-import { useRouter } from '@/i18n/routing';
-import {
-    addCharacterBook, copyWorldBook, deleteCharacterBook, exportWorldBook, getAllCharacterBookLists,
-    importCharacterBook
-} from '@/lib/worldbook';
-import { selectedCharacterBookIdAtom } from '@/store/action';
+  addCharacterBook,
+  copyWorldBook,
+  deleteCharacterBook,
+  exportWorldBook,
+  getAllCharacterBookLists,
+  importCharacterBook,
+} from "@/lib/worldbook";
 
-const newWorldBookModalAtom = atom(false)
+const newWorldBookModalAtom = atom(false);
 
 function page() {
   return (
@@ -47,14 +64,14 @@ function page() {
 export default page;
 
 function Header() {
-  const t = useTranslations()
-  const [,setNewModal] = useAtom(newWorldBookModalAtom)
+  const t = useTranslations();
+  const [, setNewModal] = useAtom(newWorldBookModalAtom);
 
   return (
     <div className="flex justify-between">
-      <div className="font-bold">{t("worldbook")}</div>
+      <div className="font-bold">{t("worldbook")}🚧</div>
       <div className="flex gap-x-2">
-        <Button onClick={()=>setNewModal(true)} variant="outline" size="icon">
+        <Button onClick={() => setNewModal(true)} variant="outline" size="icon">
           <PlusIcon />
         </Button>
         <Button variant="outline" size="icon" onClick={importCharacterBook}>
@@ -66,12 +83,9 @@ function Header() {
 }
 
 function WorldbookLists() {
-  const t = useTranslations()
+  const t = useTranslations();
   const lists = getAllCharacterBookLists();
-  const router = useRouter()
-  const [actionCharacterBookid, setActionCharacterBookId] = useAtom(
-    selectedCharacterBookIdAtom
-  );
+  const router = useRouter();
   const [deleteCharacterBookId, setDeleteCharacterBookId] = useState<Number>();
   const [isDeleteCharacterBookModal, setIsDeleteCharacterBookModal] =
     useState(false);
@@ -79,14 +93,13 @@ function WorldbookLists() {
     setDeleteCharacterBookId(id);
     setIsDeleteCharacterBookModal(true);
   };
-  const handleActionCharacterBook = (id: number) => {
-    setActionCharacterBookId(id);
-    router.push("/workspaces/worldbook/entries")
+  const handleActionCharacterBook = (bookId: number) => {
+    router.push(`/workspaces/worldbook/${bookId}`);
   };
-  const handleExportWorldBook = (id:number) =>{
-    exportWorldBook(id)
-    toast.success("OK")
-  }
+  const handleExportWorldBook = (id: number) => {
+    exportWorldBook(id);
+    toast.success("OK");
+  };
   return (
     <>
       <Table>
@@ -103,7 +116,9 @@ function WorldbookLists() {
               <TableCell className="text-right">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="link"><EllipsisVerticalIcon /></Button>
+                    <Button variant="link">
+                      <EllipsisVerticalIcon />
+                    </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem
@@ -111,12 +126,14 @@ function WorldbookLists() {
                     >
                       {t("edit")}
                     </DropdownMenuItem>
-                      <DropdownMenuItem
-                      onClick={()=>copyWorldBook(list.id)}
-                    >
+                    <DropdownMenuItem onClick={() => copyWorldBook(list.id)}>
                       {t("copy")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={()=>handleExportWorldBook(list.id)}>{t("export")}</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleExportWorldBook(list.id)}
+                    >
+                      {t("export")}
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => handleDeleteCharacterBook(list.id)}
                       className="text-red-600 focus:text-red-600"
@@ -139,35 +156,40 @@ function WorldbookLists() {
   );
 }
 
-function NewCharacterBookModal(){
-  const t = useTranslations()
-  const [isOpen,setIsOpen] = useAtom(newWorldBookModalAtom)
-  const [inputValue , setInputValue] = useState("")
-  const handleNewCharacterBook = async () =>{
-    await addCharacterBook(inputValue)
-    setIsOpen(false)
-    toast.success("Add it!" + inputValue)
-  }
-  return(
+function NewCharacterBookModal() {
+  const t = useTranslations();
+  const [isOpen, setIsOpen] = useAtom(newWorldBookModalAtom);
+  const [inputValue, setInputValue] = useState("");
+  const handleNewCharacterBook = async () => {
+    await addCharacterBook(inputValue);
+    setIsOpen(false);
+    toast.success("Add it!" + inputValue);
+  };
+  return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>{t("give_name")}</DialogTitle>
-      </DialogHeader>
-      <Input value={inputValue} onChange={(e)=>setInputValue(e.target.value)}/>
-      <DialogFooter className="justify-end">
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("give_name")}</DialogTitle>
+        </DialogHeader>
+        <Input
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <DialogFooter className="justify-end">
           <DialogClose asChild>
-            <Button onClick={()=>setIsOpen(false)} type="button" variant="secondary">
+            <Button
+              onClick={() => setIsOpen(false)}
+              type="button"
+              variant="secondary"
+            >
               {t("cancel")}
             </Button>
           </DialogClose>
-          <Button onClick={handleNewCharacterBook}>
-            {t("new")}
-          </Button>
+          <Button onClick={handleNewCharacterBook}>{t("new")}</Button>
         </DialogFooter>
-    </DialogContent>
-  </Dialog>
-  )
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 function DeleteCharacterBookModal({
@@ -179,11 +201,11 @@ function DeleteCharacterBookModal({
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: number;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
   const handleDeleteCharacter = async () => {
     deleteCharacterBook(id);
     setIsOpen(false);
-    toast.success(t("success"))
+    toast.success(t("success"));
   };
   return (
     <AlertDialog open={isopen}>
@@ -193,7 +215,7 @@ function DeleteCharacterBookModal({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setIsOpen(false)}>
-          {t("cancel")}
+            {t("cancel")}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDeleteCharacter}

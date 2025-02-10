@@ -1,20 +1,23 @@
 "use client";
-import { useLiveQuery } from 'dexie-react-hooks';
-import { atom, useAtom } from 'jotai';
-import { useTranslations } from 'next-intl';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useLiveQuery } from "dexie-react-hooks";
+import { atom, useAtom } from "jotai";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import { db, RegexScriptsTable } from '@/db/schema';
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { db, RegexScriptsTable } from "@/db/schema";
 import {
-  updateFind_Regex, updateIsEnable, updateReplaceString, updateScript_Name
-} from '@/lib/regex';
+  updateFind_Regex,
+  updateIsEnable,
+  updateReplaceString,
+  updateScript_Name,
+} from "@/lib/regex";
 
 const regexAtom = atom<RegexScriptsTable>();
 
@@ -60,9 +63,9 @@ function Profile() {
     <>
       {regex ? (
         <div className="grid grid-cols-1 gap-y-4">
-          <div >
-          <Label>{t("Regex.switch")}</Label>
-          <Switch onClick={handleSwitch} checked={!regex.disabled}/>
+          <div className="flex gap-x-2 items-center">
+            <Label>{t("Regex.switch")}</Label>
+            <Switch onClick={handleSwitch} checked={!regex.disabled} />
           </div>
           <div>
             <Label>{t("Regex.script_name")}</Label>
