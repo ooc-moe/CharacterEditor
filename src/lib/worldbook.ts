@@ -79,12 +79,24 @@ export async function updateCharacterBookEntriesEnable(
       console.log("Entry not found");
       return;
     }
+    
     entrys.entries[index].enabled = !entrys.entries[index].enabled;
     await db.characterBook.update(bookId, { entries: entrys.entries });
     console.log("Entry updated successfully");
   } catch (e) {
     console.error("Error updating entry:", e);
     throw e;
+  }
+}
+
+export async function updateBookEntryItem(bookId:number,entryIndex:number,field:string,value:any,) {
+  try{
+    const rows = await db.characterBook.update(bookId,{
+      [`entries.${entryIndex}.${field}` as any]:value
+    })
+  }catch(e){
+
+    console.log(e)
   }
 }
 

@@ -1,29 +1,42 @@
 "use client";
-export const runtime = 'edge';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { DownloadIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import Image from 'next/image';
-import { useParams } from 'next/navigation';
-import React, { useState } from 'react';
+export const runtime = "edge";
+import { useLiveQuery } from "dexie-react-hooks";
+import { DownloadIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import React, { useState } from "react";
 
 import {
-  Accordion, AccordionContent, AccordionItem, AccordionTrigger
-} from '@/components/ui/accordion';
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
-  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue
-} from '@/components/ui/select';
-import { db } from '@/db/schema';
-import { exportCharacter } from '@/lib/character';
-import { getAllRegexScriptLists } from '@/lib/regex';
-import { getAllCharacterBookLists } from '@/lib/worldbook';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { db } from "@/db/schema";
+import { exportCharacter } from "@/lib/character";
+import { getAllRegexScriptLists } from "@/lib/regex";
+import { getAllCharacterBookLists } from "@/lib/worldbook";
 
 function page() {
   return (
@@ -152,7 +165,9 @@ function ExportModal({
 
   const handleCheckboxChange = (id: number, checked: boolean) => {
     setRegexId((prev) =>
-      checked ? [...prev, String(id)] : prev.filter((item) => item !== String(id))
+      checked
+        ? [...prev, String(id)]
+        : prev.filter((item) => item !== String(id))
     );
   };
 
@@ -160,8 +175,8 @@ function ExportModal({
     <AlertDialog open={isShow}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle></AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogTitle>{t("export ready")}</AlertDialogTitle>
+          <AlertDialogDescription className="text-left">
             <Label>{t("worldbook")}</Label>
             <Select
               defaultValue="null"
@@ -172,7 +187,7 @@ function ExportModal({
               </SelectTrigger>
 
               <SelectContent>
-                <SelectItem value="null">Null</SelectItem>
+                <SelectItem value="null">{t("null")}</SelectItem>
                 {worldbookLists?.map((list) => (
                   <SelectItem key={list.id} value={String(list.id)}>
                     {list.name}
@@ -181,7 +196,7 @@ function ExportModal({
               </SelectContent>
             </Select>
             <Label>{t("regex_scripts")}</Label>
-            <div>
+            <div className="overflow-y-scroll sm:max-h-32 md:max-h-64">
               {regexLists?.map((list) => (
                 <div
                   className="grid grid-cols-1 gap-y-1 overflow-y-hidden"

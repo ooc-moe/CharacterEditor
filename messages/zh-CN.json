@@ -102,5 +102,8 @@
   "type messages": "请输入内容",
   "switch": "开关",
   "main": "主要",
-  "other": "其它"
+  "other": "其它",
+  "null": "空",
+  "export ready": "导出准备",
+  "selected": "已选择"
 }
