@@ -52,7 +52,8 @@
     "keys": "触发关键词",
     "secondary_keys": "第二关键词",
     "keys_placeholder": "关键词1,关键词2,关键词3...",
-    "second_keys": "次要触发关键词"
+    "second_keys": "次要触发关键词",
+    "comment": "条目名称"
   },
   "Regex": {
     "find_regex": "正则匹配",

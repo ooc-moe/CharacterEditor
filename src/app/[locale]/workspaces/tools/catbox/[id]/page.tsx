@@ -1,28 +1,29 @@
-"use client";
-export const runtime = 'edge';
-import { atom, useAtom } from 'jotai';
-import {
-  CircleHelpIcon, ClipboardMinusIcon,
-  ImportIcon, Loader2, PlusIcon
-} from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import Image from 'next/image';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import { v7 as uuidv7 } from 'uuid';
+'use client';
 
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
-  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
-  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -30,6 +31,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { db } from '@/db/schema';
 import { addGalleryItem, deleteGalleryItem, getGallyList } from '@/lib/gallery';
+import { atom, useAtom } from 'jotai';
+import { CircleHelpIcon, ClipboardMinusIcon, ImportIcon, Loader2, PlusIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { v7 as uuidv7 } from 'uuid';
+
+export const runtime = 'edge';
 
 const newGalleryModalAtom = atom(false);
 const exportGalleryModalAtom = atom(false);
@@ -57,20 +68,12 @@ function Header() {
   const [importModal, setImportModal] = useAtom(importGalleryModalAtom);
   return (
     <div className="flex justify-between">
-      <div className="font-bold">{t("gallery_list")}</div>
+      <div className="font-bold">{t('gallery_list')}</div>
       <div className="flex gap-x-2">
-        <Button
-          onClick={() => setImportModal(true)}
-          variant="outline"
-          size="icon"
-        >
+        <Button onClick={() => setImportModal(true)} variant="outline" size="icon">
           <ImportIcon />
         </Button>
-        <Button
-          onClick={() => setExportModal(true)}
-          variant="outline"
-          size="icon"
-        >
+        <Button onClick={() => setExportModal(true)} variant="outline" size="icon">
           <ClipboardMinusIcon />
         </Button>
         <Button onClick={() => setNewModal(true)} variant="outline" size="icon">
@@ -86,16 +89,16 @@ function ImportModal() {
     name: string;
     url: string;
   }
-  const t = useTranslations()
+  const t = useTranslations();
   const params = useParams();
   const [isShow, setIsShow] = useState(false);
   const [isOpen, setIsOpen] = useAtom(importGalleryModalAtom);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [galleryLists, setGalleryLists] = useState<GalleryLists[]>([]);
   useEffect(() => {
     if (input) {
       const parsedData = input
-        .split("\n")
+        .split('\n')
         .map((line) => {
           const regex = /^(.+?)_([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)$/;
           const match = line.trim().match(regex);
@@ -124,8 +127,8 @@ function ImportModal() {
     db.gallery.update(Number(params.id), {
       content: entry,
     });
-    setIsShow(false)
-    toast.success("Ok");
+    setIsShow(false);
+    toast.success('Ok');
   };
 
   return (
@@ -133,7 +136,7 @@ function ImportModal() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {t("importGallery")}
+            {t('importGallery')}
             <Popover>
               <PopoverTrigger>
                 <CircleHelpIcon />
@@ -149,7 +152,7 @@ function ImportModal() {
             </Popover>
           </DialogTitle>
           <DialogDescription>
-            <div className="grid md:grid:cols-2 grid-cols-1 gap-y-4">
+            <div className="md:grid:cols-2 grid grid-cols-1 gap-y-4">
               <Textarea
                 className="whitespace-pre-line"
                 value={input}
@@ -160,7 +163,7 @@ function ImportModal() {
             </div>
           </DialogDescription>
           <DialogFooter>
-            <Button onClick={handleImport}>{t("import")}</Button>
+            <Button onClick={handleImport}>{t('import')}</Button>
           </DialogFooter>
         </DialogHeader>
       </DialogContent>
@@ -171,21 +174,21 @@ function ImportModal() {
 function ExportModal() {
   const params = useParams();
   const [isOpen, setIsOpen] = useAtom(exportGalleryModalAtom);
-  const [url, setUrl] = useState("");
-  const [book, setBook] = useState("");
+  const [url, setUrl] = useState('');
+  const [book, setBook] = useState('');
   const item = getGallyList(Number(params.id));
   useEffect(() => {
     if (!item) return;
     const lists = item.content;
-    const urlData = lists.map((list) => list.url).join("\n");
+    const urlData = lists.map((list) => list.url).join('\n');
     setUrl(urlData);
     const book = lists
       .map((list) => {
-        const fileName = list.url.split("/").pop();
-        if (!fileName) return "";
+        const fileName = list.url.split('/').pop();
+        if (!fileName) return '';
         return `${list.name}_${fileName}`;
       })
-      .join("\n");
+      .join('\n');
     setBook(book);
   }, [item]);
   return (
@@ -218,25 +221,30 @@ function DeleteModal() {
   const [isOpen, setIsOpen] = useAtom(deleteGalleryItemModalAtom);
   const [uuid, setUUID] = useAtom(deleteGalleryItemUUID);
   const handleDelete = async () => {
-    if(!uuid) {
-      toast.error("uuid not found")
-      return 
+    if (!uuid) {
+      toast.error('uuid not found');
+      return;
     }
-    await deleteGalleryItem(Number(params.id),uuid)
-    setUUID(null)
-    setIsOpen(false)
-    toast.success("Delete it!")
+    await deleteGalleryItem(Number(params.id), uuid);
+    setUUID(null);
+    setIsOpen(false);
+    toast.success('Delete it!');
   };
   return (
-    <AlertDialog open={isOpen} onOpenChange={()=>setIsOpen(false)}>
+    <AlertDialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("ays")}</AlertDialogTitle>
-          <AlertDialogDescription>{t("nrb")}</AlertDialogDescription>
+          <AlertDialogTitle>{t('ays')}</AlertDialogTitle>
+          <AlertDialogDescription>{t('nrb')}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}  className={buttonVariants({ variant: "destructive" })}>{t("delete")}</AlertDialogAction>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleDelete}
+            className={buttonVariants({ variant: 'destructive' })}
+          >
+            {t('delete')}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -244,36 +252,32 @@ function DeleteModal() {
 }
 
 function GalleryList() {
-  const t = useTranslations()
+  const t = useTranslations();
   const params = useParams();
   const gallery = getGallyList(Number(params.id));
   const lists = gallery?.content;
   const [deleteModal, setDeleteModal] = useAtom(deleteGalleryItemModalAtom);
-  const [deleteUUID,setDeleteUUID]  = useAtom(deleteGalleryItemUUID)
+  const [deleteUUID, setDeleteUUID] = useAtom(deleteGalleryItemUUID);
   const handleDeleteItem = (uuid: string) => {
-    setDeleteUUID(uuid)
+    setDeleteUUID(uuid);
     setDeleteModal(true);
   };
   return (
     <>
       {lists ? (
-        <ul className="grid gap-x-4 gap-y-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 3xl:grid-cols-8 4xl:grid-cols-9 5xl:grid-cols-10 6xl:grid-cols-11 7xl:grid-cols-12 overflow-y-scroll">
+        <ul className="3xl:grid-cols-8 4xl:grid-cols-9 5xl:grid-cols-10 6xl:grid-cols-11 7xl:grid-cols-12 grid grid-cols-2 gap-x-4 gap-y-8 overflow-y-scroll sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
           {lists.map((list) => (
             <li key={list.uuid}>
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <Image
-                    src={list.url}
-                    alt={list.name}
-                    width={1000}
-                    height={1000}
-                  />
+                  <Image src={list.url} alt={list.name} width={1000} height={1000} />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem
-                  onClick={()=>handleDeleteItem(list.uuid)}
-                  className="text-red-600 focus:text-red-600">
-                  {t("delete")}
+                    onClick={() => handleDeleteItem(list.uuid)}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    {t('delete')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -292,14 +296,14 @@ function NewGalleryModal() {
   const params = useParams();
   const t = useTranslations();
   const [isOpen, setIsOpen] = useAtom(newGalleryModalAtom);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChangeImage = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".png,.webp,.jpg,.jpeg,avif,gif";
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.png,.webp,.jpg,.jpeg,avif,gif';
     input.onchange = async (event: any) => {
       const file = event.target.files?.[0];
       if (!file) return;
@@ -310,45 +314,45 @@ function NewGalleryModal() {
 
   const handleUpload = async () => {
     if (!image) {
-      toast.error("Please select an image.");
+      toast.error('Please select an image.');
       return;
     }
 
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("name", input);
-    formData.append("file", image);
+    formData.append('name', input);
+    formData.append('file', image);
 
     try {
-      const result = await fetch("/api/catbox", {
-        method: "POST",
+      const result = await fetch('/api/catbox', {
+        method: 'POST',
         body: formData,
       });
 
       if (!result.ok) {
-        toast.error("Failed to upload file, please try again.");
+        toast.error('Failed to upload file, please try again.');
         setIsLoading(false);
         return;
       }
 
       const resultData = await result.json();
 
-      if (resultData.status === "error") {
-        toast.error(resultData.message || "An error occurred.");
+      if (resultData.status === 'error') {
+        toast.error(resultData.message || 'An error occurred.');
         setIsLoading(false);
         return;
       }
-      setInput("");
+      setInput('');
       setImage(null);
 
       await addGalleryItem(Number(params.id), resultData.name, resultData.url);
       setIsOpen(false);
       setIsLoading(false);
-      toast.success("Added: " + resultData.name);
+      toast.success('Added: ' + resultData.name);
     } catch (error) {
       console.error(error);
-      toast.error("An unexpected error occurred.");
+      toast.error('An unexpected error occurred.');
       setIsLoading(false);
     }
   };
@@ -357,18 +361,18 @@ function NewGalleryModal() {
     <AlertDialog open={isOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("input keyword and image")}</AlertDialogTitle>
+          <AlertDialogTitle>{t('input keyword and image')}</AlertDialogTitle>
           <AlertDialogDescription>
-            <div className="grid grid-cols-3 gap-x-4 items-center">
+            <div className="grid grid-cols-3 items-center gap-x-4">
               <div className="col-span-2">
                 <Input
-                  placeholder={t("keyword")}
+                  placeholder={t('keyword')}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                 />
               </div>
               <Button onClick={handleChangeImage} variant="link">
-                {t("select image")}
+                {t('select image')}
               </Button>
             </div>
 
@@ -386,9 +390,7 @@ function NewGalleryModal() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setIsOpen(false)}>
-            {t("cancel")}
-          </AlertDialogCancel>
+          <AlertDialogCancel onClick={() => setIsOpen(false)}>{t('cancel')}</AlertDialogCancel>
           {isLoading ? (
             <AlertDialogAction disabled>
               <Loader2 className="animate-spin" />
@@ -397,11 +399,9 @@ function NewGalleryModal() {
           ) : (
             <>
               {input.length > 0 && image ? (
-                <AlertDialogAction onClick={handleUpload}>
-                  {t("upload")}
-                </AlertDialogAction>
+                <AlertDialogAction onClick={handleUpload}>{t('upload')}</AlertDialogAction>
               ) : (
-                <AlertDialogAction disabled>{t("new")}</AlertDialogAction>
+                <AlertDialogAction disabled>{t('new')}</AlertDialogAction>
               )}
             </>
           )}

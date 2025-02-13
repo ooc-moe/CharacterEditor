@@ -1,9 +1,4 @@
-"use client";
-export const runtime = "edge";
-import { useLiveQuery } from "dexie-react-hooks";
-import { EllipsisVerticalIcon, PlusIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
-import React, { useState } from "react";
+'use client';
 
 import {
   AlertDialog,
@@ -14,15 +9,15 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Switch } from "@/components/ui/switch";
+} from '@/components/ui/dropdown-menu';
+import { Switch } from '@/components/ui/switch';
 import {
   Table,
   TableBody,
@@ -30,15 +25,21 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { CharacterBookTable, db } from "@/db/schema";
-import { useRouter } from "@/i18n/routing";
+} from '@/components/ui/table';
+import { CharacterBookTable, db } from '@/db/schema';
+import { useRouter } from '@/i18n/routing';
 import {
   addCharacterBookEntries,
   deleteCharacterBookEntries,
   updateCharacterBookEntriesEnable,
-} from "@/lib/worldbook";
-import { useParams } from "next/navigation";
+} from '@/lib/worldbook';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { EllipsisVerticalIcon, PlusIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import React, { useState } from 'react';
+
+export const runtime = 'edge';
 
 function page() {
   return (
@@ -59,7 +60,7 @@ function Header() {
   };
   return (
     <div className="flex justify-between">
-      <div>{t("Nav.entries")}</div>
+      <div>{t('Nav.entries')}</div>
       <div className="flex gap-x-2">
         <Button onClick={handleAddEntries} variant="outline" size="icon">
           <PlusIcon />
@@ -73,14 +74,10 @@ function EntrieLists() {
   const router = useRouter();
   const t = useTranslations();
   const params = useParams();
-  type EntryType = CharacterBookTable["entries"][number];
+  type EntryType = CharacterBookTable['entries'][number];
   const [entrieLists, setEntrieLists] = useState<EntryType[]>();
-  const [deleteCharacterBookEntrieIndex, setDeleteCharacterBookEntrieIndex] =
-    useState<number>();
-  const [
-    isDeleteCharacterBookEntrieModal,
-    setIsDeleteCharacterBookEntrieModal,
-  ] = useState(false);
+  const [deleteCharacterBookEntrieIndex, setDeleteCharacterBookEntrieIndex] = useState<number>();
+  const [isDeleteCharacterBookEntrieModal, setIsDeleteCharacterBookEntrieModal] = useState(false);
 
   const handleEditEntries = (entryId: number) => {
     router.push(`/workspaces/worldbook/${params.bookId}/entries/${entryId}`);
@@ -103,9 +100,9 @@ function EntrieLists() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-12">{t("switch")}</TableHead>
-            <TableHead>{t("name")}</TableHead>
-            <TableHead className="text-right">{t("action")}</TableHead>
+            <TableHead className="w-12">{t('switch')}</TableHead>
+            <TableHead>{t('name')}</TableHead>
+            <TableHead className="text-right">{t('action')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -114,10 +111,7 @@ function EntrieLists() {
               {book.map((list, index) => (
                 <TableRow key={index}>
                   <TableCell>
-                    <EntriesEnableSwitch
-                      isEnabled={list.enabled}
-                      entryIndex={index}
-                    />
+                    <EntriesEnableSwitch isEnabled={list.enabled} entryIndex={index} />
                   </TableCell>
                   <TableCell>{list.comment}</TableCell>
                   <TableCell className="text-right">
@@ -128,17 +122,15 @@ function EntrieLists() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() => handleEditEntries(index)}
-                        >
-                          {t("edit")}
+                        <DropdownMenuItem onClick={() => handleEditEntries(index)}>
+                          {t('edit')}
                         </DropdownMenuItem>
-                        <DropdownMenuItem>{t("export")}</DropdownMenuItem>
+                        <DropdownMenuItem>{t('export')}</DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleDeleteCharacterBookEntrie(index)}
                           className="text-red-600 focus:text-red-600"
                         >
-                          {t("delete")}
+                          {t('delete')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -180,18 +172,16 @@ function DeleteCharacterBookEntrieModal({
     <AlertDialog open={isopen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("ays")}</AlertDialogTitle>
-          <AlertDialogDescription>{t("nrb")}</AlertDialogDescription>
+          <AlertDialogTitle>{t('ays')}</AlertDialogTitle>
+          <AlertDialogDescription>{t('nrb')}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setIsOpen(false)}>
-            {t("cancel")}
-          </AlertDialogCancel>
+          <AlertDialogCancel onClick={() => setIsOpen(false)}>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDeleteCharacter}
-            className={buttonVariants({ variant: "destructive" })}
+            className={buttonVariants({ variant: 'destructive' })}
           >
-            {t("delete")}
+            {t('delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

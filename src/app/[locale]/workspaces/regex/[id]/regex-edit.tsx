@@ -1,23 +1,23 @@
-"use client";
-import { useLiveQuery } from "dexie-react-hooks";
-import { atom, useAtom } from "jotai";
-import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+'use client';
 
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { db, RegexScriptsTable } from "@/db/schema";
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { RegexScriptsTable, db } from '@/db/schema';
 import {
   updateFind_Regex,
   updateIsEnable,
   updateReplaceString,
   updateScript_Name,
-} from "@/lib/regex";
+} from '@/lib/regex';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { atom, useAtom } from 'jotai';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const regexAtom = atom<RegexScriptsTable>();
 
@@ -35,8 +35,8 @@ export default function RegexEdit() {
   return (
     <Tabs defaultValue="profile" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="profile">{t("profile")}</TabsTrigger>
-        <TabsTrigger value="content">{t("content")}</TabsTrigger>
+        <TabsTrigger value="profile">{t('profile')}</TabsTrigger>
+        <TabsTrigger value="content">{t('content')}</TabsTrigger>
       </TabsList>
       <TabsContent value="profile">
         <Profile />
@@ -63,12 +63,12 @@ function Profile() {
     <>
       {regex ? (
         <div className="grid grid-cols-1 gap-y-4">
-          <div className="flex gap-x-2 items-center">
-            <Label>{t("Regex.switch")}</Label>
+          <div className="flex items-center gap-x-2">
+            <Label>{t('Regex.switch')}</Label>
             <Switch onClick={handleSwitch} checked={!regex.disabled} />
           </div>
           <div>
-            <Label>{t("Regex.script_name")}</Label>
+            <Label>{t('Regex.script_name')}</Label>
             <Input
               value={regex.scriptName}
               onChange={(e) => handleChangeScriptName(e.target.value)}
@@ -87,10 +87,10 @@ function RegexEditor() {
   const t = useTranslations();
   const parmas = useParams();
   const [regex, setRegex] = useAtom(regexAtom);
-  const [before, setBefore] = useState("");
-  const [after, setAfter] = useState("");
-  const [findRegex, setFindRegex] = useState("");
-  const [replaceWith, setReplaceWith] = useState("");
+  const [before, setBefore] = useState('');
+  const [after, setAfter] = useState('');
+  const [findRegex, setFindRegex] = useState('');
+  const [replaceWith, setReplaceWith] = useState('');
   const handleChangeFindRegex = async (value: string) => {
     if (!regex) return;
     updateFind_Regex(regex.id, value);
@@ -105,13 +105,13 @@ function RegexEditor() {
 
       if (findRegex.trim()) {
         let pattern = findRegex;
-        let flags = "g";
+        let flags = 'g';
         const regexMatch = findRegex.match(/^\/(.*)\/([gim]*)$/);
         if (regexMatch) {
           pattern = regexMatch[1];
-          flags = regexMatch[2] || "";
+          flags = regexMatch[2] || '';
         } else {
-          flags = "g";
+          flags = 'g';
         }
 
         const regex = new RegExp(pattern, flags);
@@ -126,31 +126,28 @@ function RegexEditor() {
 
   return (
     <div>
-      <div className="grid xs:grid-col-1 grid-col-2 gap-y-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2">
+      <div className="xs:grid-col-1 grid-col-2 grid gap-y-2">
+        <div className="grid grid-cols-1 gap-x-2 md:grid-cols-2">
           <div>
-            <Label>{t("Regex.playground")}</Label>
-            <Textarea
-              value={before}
-              onChange={(e) => setBefore(e.target.value)}
-            />
+            <Label>{t('Regex.playground')}</Label>
+            <Textarea value={before} onChange={(e) => setBefore(e.target.value)} />
           </div>
           <div>
             <Label>
-              {t("preview")} <Badge variant="outline">{t("beta")}</Badge>
+              {t('preview')} <Badge variant="outline">{t('beta')}</Badge>
             </Label>
             <Textarea value={after} disabled />
           </div>
         </div>
         <div>
-          <Label>{t("Regex.find_regex")}</Label>
+          <Label>{t('Regex.find_regex')}</Label>
           <Textarea
             value={regex?.findRegex}
             onChange={(e) => handleChangeFindRegex(e.target.value)}
           />
         </div>
         <div>
-          <Label>{t("Regex.replace_with")}</Label>
+          <Label>{t('Regex.replace_with')}</Label>
           <Textarea
             value={regex?.replaceString}
             onChange={(e) => handleChangeReplaceString(e.target.value)}

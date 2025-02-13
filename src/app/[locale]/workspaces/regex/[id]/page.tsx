@@ -1,12 +1,9 @@
-import React from 'react';
-
 import RegexEdit from './regex-edit';
+import React from 'react';
 
 export const runtime = 'edge';
 function page() {
-  return (
-    <RegexEdit />
-  )
+  return <RegexEdit />;
 }
 
-export default page
+export default page;

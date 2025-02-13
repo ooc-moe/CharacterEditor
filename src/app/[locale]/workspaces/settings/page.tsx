@@ -1,12 +1,15 @@
-import { useTranslations } from 'next-intl';
-import React from 'react';
-
 import { LanguageToggle } from '@/components/language-toggle';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 import {
-    Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
+import { useTranslations } from 'next-intl';
+import React from 'react';
 
 export const runtime = 'edge';
 function page() {
@@ -38,10 +41,10 @@ function Settings() {
 }
 
 function ThemeSwitch() {
-  const t = useTranslations()
+  const t = useTranslations();
   return (
-    <div className="flex justify-between w-full">
-      <div>{t("theme")}</div>
+    <div className="flex w-full justify-between">
+      <div>{t('theme')}</div>
       <div>
         <ModeToggle />
       </div>
@@ -50,10 +53,10 @@ function ThemeSwitch() {
 }
 
 function LanguageSelect() {
-  const t = useTranslations()
+  const t = useTranslations();
   return (
-    <div className="flex justify-between w-full">
-      <div>{t("language")}</div>
+    <div className="flex w-full justify-between">
+      <div>{t('language')}</div>
       <LanguageToggle />
     </div>
   );

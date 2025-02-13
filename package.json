@@ -80,6 +80,7 @@
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.7",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
     "@types/png-chunk-text": "^1.0.3",
@@ -88,8 +89,12 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.23",
+    "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-next-on-pages": "^1.13.7",
     "postcss": "^8",
+    "prettier": "^3.5.0",
+    "prettier-plugin-sort-json": "^4.1.1",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
     "typescript": "^5"

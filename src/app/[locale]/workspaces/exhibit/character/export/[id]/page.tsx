@@ -1,18 +1,11 @@
-"use client";
-export const runtime = "edge";
-import { useLiveQuery } from "dexie-react-hooks";
-import { DownloadIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import { useParams } from "next/navigation";
-import React, { useState } from "react";
+'use client';
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from '@/components/ui/accordion';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,21 +15,29 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { db } from "@/db/schema";
-import { exportCharacter } from "@/lib/character";
-import { getAllRegexScriptLists } from "@/lib/regex";
-import { getAllCharacterBookLists } from "@/lib/worldbook";
+} from '@/components/ui/select';
+import { db } from '@/db/schema';
+import { exportCharacter } from '@/lib/character';
+import { getAllRegexScriptLists } from '@/lib/regex';
+import { getAllCharacterBookLists } from '@/lib/worldbook';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { DownloadIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import React, { useState } from 'react';
+
+export const runtime = 'edge';
 
 function page() {
   return (
@@ -58,7 +59,7 @@ function Header() {
   return (
     <>
       <div className="flex justify-between">
-        <div>{t("preview")}</div>
+        <div>{t('preview')}</div>
         <div className="flex gap-x-2">
           <Button onClick={handleExport} variant="outline" size="icon">
             <DownloadIcon />
@@ -83,9 +84,9 @@ function Preview() {
         <>
           <Accordion type="multiple">
             <AccordionItem value="details">
-              <AccordionTrigger>{t("Character.details")}</AccordionTrigger>
+              <AccordionTrigger>{t('Character.details')}</AccordionTrigger>
               <AccordionContent>
-                <div className="grid grid-cols-2 gap-4 items-center">
+                <div className="grid grid-cols-2 items-center gap-4">
                   {lists?.cover ? (
                     <>
                       <div>
@@ -110,29 +111,27 @@ function Preview() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="description">
-              <AccordionTrigger>{t("Character.description")}</AccordionTrigger>
+              <AccordionTrigger>{t('Character.description')}</AccordionTrigger>
               <AccordionContent>{lists.description}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="first_mes">
-              <AccordionTrigger>{t("Character.first_mes")}</AccordionTrigger>
+              <AccordionTrigger>{t('Character.first_mes')}</AccordionTrigger>
               <AccordionContent>{lists.first_mes}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="creator_notes">
-              <AccordionTrigger>
-                {t("Character.creator_notes")}
-              </AccordionTrigger>
+              <AccordionTrigger>{t('Character.creator_notes')}</AccordionTrigger>
               <AccordionContent>{lists.data.creator_notes}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="mes_example">
-              <AccordionTrigger>{t("Character.mes_example")}</AccordionTrigger>
+              <AccordionTrigger>{t('Character.mes_example')}</AccordionTrigger>
               <AccordionContent>{lists.mes_example}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="personality">
-              <AccordionTrigger>{t("Character.personality")}</AccordionTrigger>
+              <AccordionTrigger>{t('Character.personality')}</AccordionTrigger>
               <AccordionContent>{lists.personality}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="scenario">
-              <AccordionTrigger>{t("Character.scenario")}</AccordionTrigger>
+              <AccordionTrigger>{t('Character.scenario')}</AccordionTrigger>
               <AccordionContent>{lists.scenario}</AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -165,9 +164,7 @@ function ExportModal({
 
   const handleCheckboxChange = (id: number, checked: boolean) => {
     setRegexId((prev) =>
-      checked
-        ? [...prev, String(id)]
-        : prev.filter((item) => item !== String(id))
+      checked ? [...prev, String(id)] : prev.filter((item) => item !== String(id)),
     );
   };
 
@@ -175,19 +172,16 @@ function ExportModal({
     <AlertDialog open={isShow}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("export ready")}</AlertDialogTitle>
+          <AlertDialogTitle>{t('export ready')}</AlertDialogTitle>
           <AlertDialogDescription className="text-left">
-            <Label>{t("worldbook")}</Label>
-            <Select
-              defaultValue="null"
-              onValueChange={(value) => setWorldBookId(value)}
-            >
+            <Label>{t('worldbook')}</Label>
+            <Select defaultValue="null" onValueChange={(value) => setWorldBookId(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="WorldBook" defaultValue="null" />
               </SelectTrigger>
 
               <SelectContent>
-                <SelectItem value="null">{t("null")}</SelectItem>
+                <SelectItem value="null">{t('null')}</SelectItem>
                 {worldbookLists?.map((list) => (
                   <SelectItem key={list.id} value={String(list.id)}>
                     {list.name}
@@ -195,13 +189,10 @@ function ExportModal({
                 ))}
               </SelectContent>
             </Select>
-            <Label>{t("regex_scripts")}</Label>
+            <Label>{t('regex_scripts')}</Label>
             <div className="overflow-y-scroll sm:max-h-32 md:max-h-64">
               {regexLists?.map((list) => (
-                <div
-                  className="grid grid-cols-1 gap-y-1 overflow-y-hidden"
-                  key={list.id}
-                >
+                <div className="grid grid-cols-1 gap-y-1 overflow-y-hidden" key={list.id}>
                   <div>
                     <Checkbox
                       value={String(list.id)}
@@ -217,12 +208,8 @@ function ExportModal({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setIsShow(false)}>
-            {t("cancel")}
-          </AlertDialogCancel>
-          <AlertDialogAction onClick={handleExport}>
-            {t("export")}
-          </AlertDialogAction>
+          <AlertDialogCancel onClick={() => setIsShow(false)}>{t('cancel')}</AlertDialogCancel>
+          <AlertDialogAction onClick={handleExport}>{t('export')}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

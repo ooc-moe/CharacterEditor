@@ -1,17 +1,18 @@
-"use client";
-export const runtime = 'edge';
-import { debounce } from 'es-toolkit';
-import { useAtom } from 'jotai';
-import { useEffect, useState } from 'react';
+'use client';
 
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { getCharacterField, updateCharacter, usePageGuard } from '@/lib/character';
 import { selectedCharacterIdAtom } from '@/store/action';
+import { debounce } from 'es-toolkit';
+import { useAtom } from 'jotai';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+
+export const runtime = 'edge';
 
 function page() {
-    usePageGuard();
+  usePageGuard();
   return (
     <>
       <Tag />
@@ -23,21 +24,21 @@ export default page;
 
 function Tag() {
   const [cid] = useAtom(selectedCharacterIdAtom);
-  const [inputValue, setInputValue] = useState<string>("");
-  const t = useTranslations()
+  const [inputValue, setInputValue] = useState<string>('');
+  const t = useTranslations();
   const handleChangeText = debounce(async (value: string) => {
-    await updateCharacter(cid as number, "data.tags" as string, value);
+    await updateCharacter(cid as number, 'data.tags' as string, value);
   }, 1000);
 
   useEffect(() => {
     const fetchDefaultValue = async () => {
       try {
-        const rows = await getCharacterField(cid as number, "data.tags");
-        if (rows && typeof rows === "string") {
+        const rows = await getCharacterField(cid as number, 'data.tags');
+        if (rows && typeof rows === 'string') {
           setInputValue(rows);
         }
       } catch (error) {
-        console.error("Failed to fetch default value:", error);
+        console.error('Failed to fetch default value:', error);
       }
     };
     fetchDefaultValue();
@@ -46,11 +47,11 @@ function Tag() {
   return (
     <>
       {cid ? (
-        <div className="flex flex-col h-full overflow-hidden p-0.5">
-          <Label htmlFor="message">{t("Character.tags")}</Label>
+        <div className="flex h-full flex-col overflow-hidden p-0.5">
+          <Label htmlFor="message">{t('Character.tags')}</Label>
           <Textarea
-            className="flex-1 mt-4 resize-none overflow-auto"
-            placeholder={t("type messages")}
+            className="mt-4 flex-1 resize-none overflow-auto"
+            placeholder={t('type messages')}
             value={inputValue}
             onChange={(e) => {
               const value = e.target.value;
