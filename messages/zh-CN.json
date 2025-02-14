@@ -113,6 +113,8 @@
     "light": "亮色模式"
   },
   "Worldbook": {
-    "stratgy": "状态"
-  }
+    "stratgy": "状态",
+    "depth": "深度"
+  },
+  "position": "位置"
 }

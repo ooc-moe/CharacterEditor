@@ -99,8 +99,10 @@ function Profile() {
     <>
       <div className="grid w-full items-center gap-x-2 gap-y-3">
         <div className="flex flex-cols gap-x-2">
-          <Stratgy />
           <Comment />
+          <Position />
+          <Depth />
+          <Stratgy />
         </div>
         <EntryKeys field="keys" />
         <EntryKeys field="secondary_keys" />
@@ -294,7 +296,7 @@ function Stratgy() {
         onValueChange={(value) => handleUpdate(value)}
       >
         <SelectTrigger>
-          <SelectValue placeholder="Theme" />
+          <SelectValue placeholder="Stratgy" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem className="text-green-400" value="constant">
@@ -307,5 +309,76 @@ function Stratgy() {
         </SelectContent>
       </Select>
     </div>
+  );
+}
+
+function Position() {
+  const t = useTranslations();
+  const params = useParams();
+  const [entries] = useAtom(entriesAtom);
+  const handleUpdate = (value: string) => {
+    updateBookEntryItem(
+      Number(params.bookId),
+      Number(params.entryId),
+      'extensions.position',
+      Number(value),
+    );
+  };
+  return (
+    <div>
+      <Label>{t('position')}</Label>
+      <Select
+        onValueChange={(value) => handleUpdate(value)}
+        defaultValue={String(entries?.extensions.position)}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Position" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="0">↑Char</SelectItem>
+          <SelectItem value="1">↓Char</SelectItem>
+          <SelectItem value="2">↑AN</SelectItem>
+          <SelectItem value="3">↓AN</SelectItem>
+          <SelectItem value="5">↑EM</SelectItem>
+          <SelectItem value="6">↓EM</SelectItem>
+          <SelectItem value="4">@D</SelectItem>
+          <SelectItem value="7">@D User</SelectItem>
+          <SelectItem value="8">@D AI</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
+
+function Depth() {
+  const t = useTranslations();
+  const params = useParams();
+  const [entries] = useAtom(entriesAtom);
+  const handleUpdate = (value: number) => {
+    updateBookEntryItem(Number(params.bookId), Number(params.entryId), 'extensions.depth', value);
+  };
+  return (
+    <>
+      {entries?.extensions.position == 4 ||
+      entries?.extensions.position == 7 ||
+      entries?.extensions.position == 8 ? (
+        <div className="w-[80px]">
+          <Label>{t('Worldbook.depth')}</Label>
+          <Input
+            defaultValue={entries?.extensions.depth}
+            onChange={(e) => handleUpdate(Number(e.target.value))}
+            inputMode="numeric"
+            type="number"
+            min={0}
+            max={999}
+          />
+        </div>
+      ) : (
+        <div className="w-[80px]">
+          <Label>{t('Worldbook.depth')}</Label>
+          <Input value={entries?.extensions.depth} disabled />
+        </div>
+      )}
+    </>
   );
 }
