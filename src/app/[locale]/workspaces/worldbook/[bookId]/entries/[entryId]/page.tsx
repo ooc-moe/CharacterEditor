@@ -51,6 +51,7 @@ interface CharacterBookEntries {
   secondary_keys?: Array<string>;
   constant?: boolean;
   position?: string;
+  vectorized?: boolean;
 }
 
 const entriesAtom = atom<CharacterBookEntries>();
@@ -93,14 +94,14 @@ function Header() {
 }
 
 function Profile() {
-  const [entries, setEntries] = useAtom(entriesAtom);
-  const parms = useParams();
-
   const t = useTranslations();
   return (
     <>
-      <div className="grid w-full items-center gap-1.5">
-        <Comment />
+      <div className="grid w-full items-center gap-x-2 gap-y-3">
+        <div className="flex flex-cols gap-x-2">
+          <Stratgy />
+          <Comment />
+        </div>
         <EntryKeys field="keys" />
         <EntryKeys field="secondary_keys" />
       </div>
@@ -249,7 +250,7 @@ function Comment() {
   }, [entries?.comment]);
 
   return (
-    <>
+    <div>
       <Label>{t('WorldBook.comment')}</Label>
       <Input
         value={entries?.comment}
@@ -258,7 +259,7 @@ function Comment() {
           handleUpdate(e.target.value);
         }}
       />
-    </>
+    </div>
   );
 }
 
@@ -266,16 +267,45 @@ function Stratgy() {
   const t = useTranslations();
   const params = useParams();
   const [entries] = useAtom(entriesAtom);
+  const handleUpdate = (value: string) => {
+    if (value == 'vectorized') {
+      updateBookEntryItem(Number(params.bookId), Number(params.entryId), 'constant', false);
+      updateBookEntryItem(Number(params.bookId), Number(params.entryId), 'vectorized', true);
+    }
+    if (value == 'constant') {
+      updateBookEntryItem(Number(params.bookId), Number(params.entryId), 'constant', true);
+      updateBookEntryItem(Number(params.bookId), Number(params.entryId), 'vectorized', false);
+    } else {
+      updateBookEntryItem(Number(params.bookId), Number(params.entryId), 'constant', false);
+      updateBookEntryItem(Number(params.bookId), Number(params.entryId), 'vectorized', false);
+    }
+  };
   return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Theme" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="light">Light</SelectItem>
-        <SelectItem value="dark">Dark</SelectItem>
-        <SelectItem value="system">System</SelectItem>
-      </SelectContent>
-    </Select>
+    <div>
+      <Label>{t('Worldbook.stratgy')}</Label>
+      <Select
+        defaultValue={
+          entries?.vectorized === false
+            ? entries.constant === true
+              ? 'constant'
+              : 'normal'
+            : 'vectorized'
+        }
+        onValueChange={(value) => handleUpdate(value)}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Theme" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem className="text-green-400" value="constant">
+            constant
+          </SelectItem>
+          <SelectItem className="text-blue-400" value="normal">
+            normal
+          </SelectItem>
+          <SelectItem value="vectorized">vectorized</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
   );
 }

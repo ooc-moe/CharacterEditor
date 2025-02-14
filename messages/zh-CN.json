@@ -106,5 +106,13 @@
   "other": "其它",
   "null": "空",
   "export ready": "导出准备",
-  "selected": "已选择"
+  "selected": "已选择",
+  "Mode": {
+    "system": "跟随系统",
+    "dark": "暗色模式",
+    "light": "亮色模式"
+  },
+  "Worldbook": {
+    "stratgy": "状态"
+  }
 }

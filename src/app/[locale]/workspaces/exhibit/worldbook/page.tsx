@@ -98,7 +98,7 @@ function WorldbookLists() {
   };
   const handleExportWorldBook = (id: number) => {
     exportWorldBook(id);
-    toast.success('OK');
+    toast.success(t('ok'));
   };
   return (
     <>
@@ -159,7 +159,7 @@ function NewCharacterBookModal() {
   const handleNewCharacterBook = async () => {
     await addCharacterBook(inputValue);
     setIsOpen(false);
-    toast.success('Add it!' + inputValue);
+    toast.success(t('ais') + inputValue);
   };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

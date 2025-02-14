@@ -52,6 +52,7 @@ interface CharacterBookTable {
     secondary_keys?: Array<string>;
     constant?: boolean;
     position?: string;
+    vectorized?:boolean;
   }>;
 }
 
@@ -99,3 +100,4 @@ db.version(1).stores({
 
 export { db };
 export type { CharacterBookTable, CharacterTable, RegexScriptsTable };
+
